@@ -2,12 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { InputField } from "../InputField";
 
-import styles from "./ChatWindow.module.scss";
+import styles from "./ChatWindowDesktop.module.scss";
 
 export function Desktop() {
   const dispatch = useDispatch();
 
   const InputMessage = useSelector(state => state.chat.InputMessage);
+  const MembersInfo = useSelector(state => state.chat.MembersInfo);
 
   const dispatchInputMessage = (value) => {
     dispatch({
@@ -15,7 +16,7 @@ export function Desktop() {
       payload: value
     });
   }
-  
+
   const handleSendMessage = () => {
     if (InputMessage.length > 512) return;
   }
@@ -40,9 +41,10 @@ export function Desktop() {
 
       </div>
 
-      <div className={styles.Info}>
+      <div className={styles.MembersInfo}>
         это можно будет отключить
       </div>
+
     </div>
   )
 }

@@ -5,20 +5,20 @@ const defaultState = {
 }
 
 // action types
-const Login = "SET_Login";
-const InputMessage = "SET_InputMessage";
-const MembersInfo = "SET_MembersInfo";
+const SET_Login = "SET_Login";
+const SET_InputMessage = "SET_InputMessage";
+const SET_MembersInfo = "SET_MembersInfo";
 
 
 export function Chat(state = defaultState, action) {
   switch (action.type) {
-    case Login:
+    case SET_Login:
       return { ...state, Login: action.payload };
 
-    case InputMessage:
+    case SET_InputMessage:
       return { ...state, InputMessage: action.payload };
 
-    case MembersInfo:
+    case SET_MembersInfo:
       return { ...state, MembersInfo: action.payload };
 
 

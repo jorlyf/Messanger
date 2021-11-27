@@ -4,7 +4,7 @@
 
   width    : 45%;
   height   : 80%;
-  min-width: 280px;
+  min-width: 600px;
 
   position : absolute;
   top      : 50%;
@@ -53,7 +53,15 @@
     }
   }
 
-  .Info {
+  .MembersInfo {
     grid-column: 2;
+    margin-left: 15px;
+
+    padding: 5px;
+
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+
+    box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.025);
   }
 }

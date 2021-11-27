@@ -1,4 +1,4 @@
-import { ChatWindow } from "./components/ChatWindow";
+import { ChatWindow } from "./pages/ChatWindow";
 
 import styles from "./App.module.scss";
 

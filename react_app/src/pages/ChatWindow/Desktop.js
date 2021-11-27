@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { InputField } from "../InputField";
+import { InputField } from "../../components/InputField";
 
 import styles from "./ChatWindowDesktop.module.scss";
 

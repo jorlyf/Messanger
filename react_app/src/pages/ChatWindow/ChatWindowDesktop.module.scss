@@ -18,14 +18,18 @@
   box-shadow      : 2px 5px 5px rgba(0, 0, 0, 0.05);
 
   .Chat {
+    grid-column: 1;
+    overflow: hidden;
     display       : flex;
     flex-direction: column;
 
     background-color: white;
 
     .Messages {
-      flex: 10;
+      overflow: auto;
+      flex-grow: 1;
       padding: 10px;
+      word-wrap: break-word;
 
       background-color: white;
       border          : 1px solid rgba(0, 0, 0, 0.15);
@@ -35,6 +39,7 @@
     }
 
     .Send {
+      flex-grow: 0;
       display              : grid;
       grid-template-columns: 16fr 1fr;
 

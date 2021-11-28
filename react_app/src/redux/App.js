@@ -1,14 +1,19 @@
 const defaultState = {
-  IsMobile: false
+  IsMobile: false,
+  Login: ""
 }
 
 const SET_IsMobile = "SET_IsMobile";
+const SET_Login = "SET_Login";
 
 
-export function App(state = defaultState, action) {
+export default function App(state = defaultState, action) {
   switch (action.type) {
     case SET_IsMobile:
       return { ...state, IsMobile: action.payload };
+
+    case SET_Login:
+      return { ...state, Login: action.payload };
 
 
     default:

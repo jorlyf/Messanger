@@ -1,0 +1,18 @@
+%message-base {
+    margin: 6px 0px;
+    padding: 4px;
+}
+.message {
+    @extend %message-base;
+    margin-right: 50px;
+}
+.mymessage {
+    @extend %message-base;
+    margin-left: 50px;
+    background-color: rgba(200, 250, 255, 0.25);
+    border-radius: 15px;
+}
+
+.login {
+    font-weight: bold;
+}

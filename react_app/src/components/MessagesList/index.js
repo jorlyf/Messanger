@@ -1,14 +1,11 @@
-
+import Message from "./Message";
 
 export default function MessagesList({messages}) {
-    console.log(messages);
     return (
-        <div>
+        <>
             {messages.map((message) => 
-                <div key={message.id}>
-                    <span>{message}</span>
-                </div>
+                <Message key={message.id} data={message} />
             )}
-        </div>
+        </>
     )
 }

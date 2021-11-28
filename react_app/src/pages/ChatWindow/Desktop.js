@@ -5,11 +5,12 @@ import MessagesList from "../../components/MessagesList";
 
 import styles from "./ChatWindowDesktop.module.scss";
 
-export function Desktop() {
+export default function Desktop() {
   const dispatch = useDispatch();
 
   const ChatHub = useSelector(state => state.chat.ChatHub);
   const Messages = useSelector(state => state.chat.Messages);
+  const Login = useSelector(state => state.chat.Login);
   const InputMessage = useSelector(state => state.chat.InputMessage);
   const MembersInfo = useSelector(state => state.chat.MembersInfo);
 
@@ -21,19 +22,23 @@ export function Desktop() {
   }
 
   const handleSendMessage = () => {
-    console.log(ChatHub);
-    if (InputMessage.length > 512) return;
-    //if (!ChatHub.connectionStarted) console.log("Соединение с chathub не установлено");;
+    if (InputMessage.length > 10000) return; // 512
+    if (ChatHub.connectionStarted) console.log("Соединение с chathub не установлено");
 
-    ChatHub.invoke("SendMessage", InputMessage);
-    dispatch({ type: "SET_InputMessage", payload: "" });
+    const messageJson = { login: Login, text: InputMessage };
+
+    try {
+      ChatHub.invoke("SendMessage", JSON.stringify(messageJson));
+      dispatch({ type: "SET_InputMessage", payload: "" }); // clear input
+    } catch (error) {
+      console.error(error.message);
+    }
   }
 
   return (
     <div className={styles.Main}>
       <div className={styles.Chat}>
-
-        <div className={styles.Messages}>
+        <div className={styles.Messages} >
           <MessagesList messages={Messages} />
         </div>
 
@@ -50,7 +55,7 @@ export function Desktop() {
       </div>
 
       <div className={styles.MembersInfo}>
-        это можно будет отключить
+        
       </div>
 
     </div>

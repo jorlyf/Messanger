@@ -1,17 +1,23 @@
 import React from "react";
-import SignalR from "@microsoft/signalr";
+import { useDispatch } from "react-redux";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 import { Desktop } from "./Desktop";
 
-export function ChatWindow()
-{
+export function ChatWindow() {
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
-    const chatHub = new SignalR.HubConnectionBuilder()
-      .withUrl("chathub")
+    const chatHub = new HubConnectionBuilder()
+      .withUrl("https://localhost:7115/chathub")
+      .withAutomaticReconnect()
       .build();
 
-    chatHub.invoke()
-  })
+    chatHub.start();
+    chatHub.on("ReceiveMessage", (message) => dispatch({ type: "AddMessage", payload: message }));
+
+    dispatch({ type: "SET_ChatHub", payload: chatHub });
+  }, []);
 
   return (
     <Desktop />

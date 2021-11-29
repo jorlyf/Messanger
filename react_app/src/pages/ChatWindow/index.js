@@ -2,26 +2,38 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
+import { ACTION_TYPES_APP } from "../../redux/App";
+import { ACTION_TYPES_CHAT } from "../../redux/Chat";
+
 import Desktop from "./Desktop";
 
 export function ChatWindow() {
   const dispatch = useDispatch();
 
-  const Login = useSelector(state => state.chat.Login);
+  const LOGIN = useSelector(state => state.chat.LOGIN);
 
   React.useEffect(() => {
-    const chatHub = new HubConnectionBuilder()
-      .withUrl("https://localhost:7115/chathub")
-      .withAutomaticReconnect()
-      .build();
+    try {
+      const chatHub = new HubConnectionBuilder()
+        .withUrl("https://localhost:7115/chathub")
+        .withAutomaticReconnect()
+        .build();
 
-    chatHub.start();
-    chatHub.on("ReceiveMessage", (message) => {
-      if (message.login === Login) return;
-      dispatch({ type: "AddMessage", payload: JSON.parse(message) })
-    });
+      chatHub.start().catch(error => {
+        dispatch({ type: ACTION_TYPES_APP.ADD_NOTIFICATION, payload: { message: error.message } });
+        console.error(error.message);
+      });
+      chatHub.on("ReceiveMessage", (message) => {
+        if (message.login === LOGIN) return;
+        dispatch({ type: ACTION_TYPES_CHAT.ADD_MESSAGE, payload: JSON.parse(message) })
+      });
 
-    dispatch({ type: "SET_ChatHub", payload: chatHub });
+      dispatch({ type: ACTION_TYPES_CHAT.SET_CHAT_HUB, payload: chatHub });
+
+    } catch (error) {
+      dispatch({ type: ACTION_TYPES_APP.ADD_NOTIFICATION, payload: { message: error.message } });
+      console.error(error.message);
+    }
   }, []);
 
   return (

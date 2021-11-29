@@ -2,35 +2,39 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { InputField } from "../../components/InputField";
 import MessagesList from "../../components/MessagesList";
+import { ACTION_TYPES_APP } from "../../redux/App";
+
+import { ACTION_TYPES_CHAT } from "../../redux/Chat";
 
 import styles from "./ChatWindowDesktop.module.scss";
 
 export default function Desktop() {
   const dispatch = useDispatch();
 
-  const ChatHub = useSelector(state => state.chat.ChatHub);
-  const Messages = useSelector(state => state.chat.Messages);
-  const Login = useSelector(state => state.chat.Login);
-  const InputMessage = useSelector(state => state.chat.InputMessage);
-  const MembersInfo = useSelector(state => state.chat.MembersInfo);
+  const CHAT_HUB = useSelector(state => state.chat.CHAT_HUB);
+  const MESSAGES = useSelector(state => state.chat.MESSAGES);
+  const LOGIN = useSelector(state => state.chat.LOGIN);
+  const INPUT_MESSAGE = useSelector(state => state.chat.INPUT_MESSAGE);
+  const MEMBERS_INFO = useSelector(state => state.chat.MEMBERS_INFO);
 
   const dispatchInputMessage = (message) => {
-    dispatch({
-      type: "SET_InputMessage",
-      payload: message
-    });
+    dispatch({ type: ACTION_TYPES_CHAT.SET_INPUT_MESSAGE, payload: message });
   }
 
   const handleSendMessage = () => {
-    if (InputMessage.length > 10000) return; // 512
-    if (ChatHub.connectionStarted) console.log("Соединение с chathub не установлено");
+    if (INPUT_MESSAGE.length > 10000) return; // 512
+    if (CHAT_HUB.connectionStarted) {
+      console.error("Соединение с chathub не установлено");
+      dispatch({ type: ACTION_TYPES_APP.ADD_NOTIFICATION, payload: { message: "Соединение с chathub не установлено" } });
+      return; }
 
-    const messageJson = { login: Login, text: InputMessage };
+    const messageJson = { login: LOGIN, text: INPUT_MESSAGE };
 
     try {
-      ChatHub.invoke("SendMessage", JSON.stringify(messageJson));
-      dispatch({ type: "SET_InputMessage", payload: "" }); // clear input
+      CHAT_HUB.invoke("SendMessage", JSON.stringify(messageJson));
+      dispatch({ type: ACTION_TYPES_CHAT.SET_INPUT_MESSAGE, payload: "" }); // clear input
     } catch (error) {
+      dispatch({ type: ACTION_TYPES_APP.ADD_NOTIFICATION, payload: { message: error.message } });
       console.error(error.message);
     }
   }
@@ -39,12 +43,12 @@ export default function Desktop() {
     <div className={styles.Main}>
       <div className={styles.Chat}>
         <div className={styles.Messages} >
-          <MessagesList messages={Messages} />
+          <MessagesList messages={MESSAGES} />
         </div>
 
         <div className={styles.Send}>
           <InputField
-            value={InputMessage}
+            value={INPUT_MESSAGE}
             dispatchFunction={dispatchInputMessage}
             placeholder={"Напишите сообщение"}
           />
@@ -55,7 +59,7 @@ export default function Desktop() {
       </div>
 
       <div className={styles.MembersInfo}>
-        
+
       </div>
 
     </div>

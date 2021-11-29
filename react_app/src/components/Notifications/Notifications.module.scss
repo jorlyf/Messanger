@@ -1,0 +1,32 @@
+.main {
+    position      : fixed;
+    display       : flex;
+    flex-direction: column-reverse;
+    top           : auto;
+    bottom        : 10px;
+    left          : auto;
+    right         : 5px;
+    width         : 300px;
+    
+    .notification {
+        display         : flex;
+        background-color: rgb(255, 255, 230);
+        border-radius   : 5px;
+        border          : 2px solid rgba(0, 0, 0, 0.2);
+        min-height      : 24px;
+        margin-bottom   : 10px;
+        padding: 5px;
+
+        span {
+            display  : block;
+            text-align: center;
+            margin   : 0;
+            width    : 100%;
+            font-size: 24px;
+          }
+
+         button {
+            width: 20px;
+         } 
+    }
+}

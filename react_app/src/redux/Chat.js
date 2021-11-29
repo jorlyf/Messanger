@@ -1,33 +1,35 @@
 const initialState = {
-  ChatHub: undefined,
-  InputMessage: "",
-  Messages: [],
-  LastMessageId: 0,
-  MembersInfo: true
+  CHAT_HUB: undefined,
+  INPUT_MESSAGE: "",
+  MESSAGES: [],
+  LAST_MESSAGE_ID: 0,
+  MEMBERS_INFO: true
 }
 
-// action types
-const SET_ChatHub = "SET_ChatHub";
-const SET_InputMessage = "SET_InputMessage";
-const SET_MembersInfo = "SET_MembersInfo";
+const ACTION_TYPES_CHAT = {
+  SET_CHAT_HUB: "SET_CHAT_HUB",
+  SET_INPUT_MESSAGE: "SET_INPUT_MESSAGE",
+  SET_MEMBERS_INFO: "SET_MEMBERS_INFO",
 
-const AddMessage = "AddMessage";
+  ADD_MESSAGE: "ADD_MESSAGE"
+}
+export { ACTION_TYPES_CHAT };
 
 export default function Chat(state = initialState, action) {
   switch (action.type) {
-    case SET_ChatHub:
+    case ACTION_TYPES_CHAT.SET_CHAT_HUB:
       return { ...state, ChatHub: action.payload };
 
-    case SET_InputMessage:
+    case ACTION_TYPES_CHAT.SET_INPUT_MESSAGE:
       return { ...state, InputMessage: action.payload };
 
-    case SET_MembersInfo:
+    case ACTION_TYPES_CHAT.SET_MEMBERS_INFO:
       return { ...state, MembersInfo: action.payload };
 
 
-    case AddMessage:
-      state.LastMessageId++;
-      return { ...state, Messages: [...state.Messages, { id: state.LastMessageId, login: action.payload.login, text: action.payload.text} ] };
+    case ACTION_TYPES_CHAT.ADD_MESSAGE:
+      state.LAST_MESSAGE_ID++;
+      return { ...state, MESSAGES: [...state.MESSAGES, { id: state.LAST_MESSAGE_ID, login: action.payload.login, text: action.payload.text }] };
 
 
     default:

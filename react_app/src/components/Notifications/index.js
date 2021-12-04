@@ -1,15 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import useTypedSelector from "../../hooks/useTypedSelector";
 
-import { ACTION_TYPES_APP } from "../../redux/App";
+import { AppActionTypes } from "../../redux/types/App";
 import { CancelButton } from "../Buttons";
 import styles from "./Notifications.module.scss";
 
 export default function Notifications() {
     const dispatch = useDispatch();
-    const NOTIFICATIONS = useSelector(state => state.app.NOTIFICATIONS);
+    const NOTIFICATIONS = useTypedSelector(state => state.app.NOTIFICATIONS);
 
     const handleClose = (index) => {
-        dispatch({ type: ACTION_TYPES_APP.DELETE_NOTIFICATION, payload: index });
+        dispatch({ type: AppActionTypes.DELETE_NOTIFICATION, payload: index });
     }
 
     return (

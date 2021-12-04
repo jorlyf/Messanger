@@ -1,12 +1,30 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using ServerSide.Models;
 
 namespace ServerSide.Hubs
 {
-    public class ChatHub : Hub
+    internal class ChatHub : Hub
     {
-        public async Task SendMessage(string json)
+        private readonly ChatManager ChatManager = new ChatManager();
+        public async Task SendMessage(string messageText)
         {
-            await this.Clients.All.SendAsync("ReceiveMessage", json);
+            User? user = ChatManager.GetUserByConnectionID(Context.ConnectionId);
+            if (user == null) return;
+
+            Message message = new Message(user.Name, messageText);
+            await this.Clients.All.SendAsync("ReceiveMessage", message);
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            ChatManager.ConnectUser(Context.ConnectionId, Context.User?.Identity?.Name ?? "Аноним");
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            ChatManager.DisconnectUser(Context.ConnectionId);
+            return base.OnDisconnectedAsync(exception);
         }
     }
 }

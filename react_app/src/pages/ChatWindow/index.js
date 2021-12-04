@@ -1,16 +1,18 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import useTypedSelector from "../../hooks/useTypedSelector";
+import { useDispatch } from "react-redux";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
-import { ACTION_TYPES_APP } from "../../redux/App";
-import { ACTION_TYPES_CHAT } from "../../redux/Chat";
+import { AppActionTypes } from "../../redux/types/App";
+import { ChatActionTypes } from "../../redux/types/Chat";
 
 import Desktop from "./Desktop";
+import Message from "../../models/Message";
 
 export function ChatWindow() {
   const dispatch = useDispatch();
 
-  const LOGIN = useSelector(state => state.chat.LOGIN);
+  const LOGIN = useTypedSelector(state => state.chat.LOGIN);
 
   React.useEffect(() => {
     try {
@@ -20,18 +22,19 @@ export function ChatWindow() {
         .build();
 
       chatHub.start().catch(error => {
-        dispatch({ type: ACTION_TYPES_APP.ADD_NOTIFICATION, payload: { message: error.message } });
+        dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: error.message } });
         console.error(error.message);
       });
-      chatHub.on("ReceiveMessage", (message) => {
-        if (message.login === LOGIN) return;
-        dispatch({ type: ACTION_TYPES_CHAT.ADD_MESSAGE, payload: JSON.parse(message) })
+      chatHub.on("ReceiveMessage", (jsonMessage) => {
+        if (jsonMessage.login === LOGIN) return;
+        console.log(jsonMessage);
+        dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.login, jsonMessage.text, jsonMessage.date) })
       });
 
-      dispatch({ type: ACTION_TYPES_CHAT.SET_CHAT_HUB, payload: chatHub });
+      dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: chatHub });
 
     } catch (error) {
-      dispatch({ type: ACTION_TYPES_APP.ADD_NOTIFICATION, payload: { message: error.message } });
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: error.message } });
       console.error(error.message);
     }
   }, []);

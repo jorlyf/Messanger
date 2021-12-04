@@ -1,16 +1,15 @@
 import { ChatWindow } from "./pages/ChatWindow";
-import { useSelector } from "react-redux";
+import useTypedSelector from "./hooks/useTypedSelector";
 
 import Auth from "./pages/Auth";
 
 import styles from "./App.module.scss";
-import React from "react";
 import Notifications from "./components/Notifications";
 
 // точка входа
-function App() {
+const App = () => {
 
-  const IS_AUTHORIZED = useSelector(state => state.app.IS_AUTHORIZED);
+  const IS_AUTHORIZED = useTypedSelector(state => state.app.IS_AUTHORIZED);
 
   return (
     <div className={styles.Main}>

@@ -1,16 +1,17 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import useTypedSelector from "../../hooks/useTypedSelector";
 
-import { ACTION_TYPES_APP } from "../../redux/App";
+import { AppActionTypes } from "../../redux/types/App";
 
 import styles from "./Auth.module.scss";
 
 export default function Auth() {
   const dispatch = useDispatch();
 
-  const LOGIN = useSelector(state => state.app.LOGIN);
+  const LOGIN = useTypedSelector(state => state.app.LOGIN);
 
   const setLogin = (login) => {
-    dispatch({ type: ACTION_TYPES_APP.SET_LOGIN, payload: login });
+    dispatch({ type: AppActionTypes.SET_LOGIN, payload: login });
   }
 
   const auth = () => {
@@ -22,7 +23,7 @@ export default function Auth() {
       console.error(error.message);
     }
 
-    dispatch({ type: ACTION_TYPES_APP.SET_IS_AUTHORIZED, payload: true });
+    dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
   }
 
   return (

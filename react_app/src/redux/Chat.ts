@@ -1,16 +1,16 @@
 import { IChatState, IChatAction, ChatActionTypes } from "./types/Chat";
 
-const initialState : IChatState = {
+const initialState: IChatState = {
   CHAT_HUB: undefined,
   INPUT_MESSAGE: "",
   MESSAGES: [],
-  LAST_MESSAGE_ID: 0,
+  NEXT_MESSAGE_ID: 0,
   MEMBERS_INFO: true
 }
 
-export const Chat = (state : IChatState = initialState, action : IChatAction) : IChatState => {
+export const Chat = (state: IChatState = initialState, action: IChatAction): IChatState => {
   console.log(action);
-  
+
   switch (action.type) {
     case ChatActionTypes.SET_CHAT_HUB:
       return { ...state, CHAT_HUB: action.payload };
@@ -23,10 +23,8 @@ export const Chat = (state : IChatState = initialState, action : IChatAction) : 
 
 
     case ChatActionTypes.ADD_MESSAGE:
-      console.log(action.payload);
-      
-      state.LAST_MESSAGE_ID++;
-      return { ...state, MESSAGES: [...state.MESSAGES, { id: state.LAST_MESSAGE_ID, login: action.payload.login, text: action.payload.text }] };
+      state.NEXT_MESSAGE_ID++;
+      return { ...state, MESSAGES: [...state.MESSAGES, action.payload] };
 
 
     default:

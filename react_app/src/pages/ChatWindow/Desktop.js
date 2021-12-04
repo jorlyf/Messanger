@@ -7,15 +7,18 @@ import MessagesList from "../../components/MessagesList";
 import { AppActionTypes } from "../../redux/types/App";
 import { ChatActionTypes } from "../../redux/types/Chat";
 
+import Message from "../../models/Message";
+
 import styles from "./ChatWindowDesktop.module.scss";
 
 export default function Desktop() {
   const dispatch = useDispatch();
 
-  const LOGIN = useTypedSelector(state => state.app.LOGIN);
+  const USERNAME = useTypedSelector(state => state.app.USERNAME);
   const CHAT_HUB = useTypedSelector(state => state.chat.CHAT_HUB);
   const INPUT_MESSAGE = useTypedSelector(state => state.chat.INPUT_MESSAGE);
   const MESSAGES = useTypedSelector(state => state.chat.MESSAGES);
+  const NEXT_MESSAGE_ID = useTypedSelector(state => state.chat.NEXT_MESSAGE_ID);
   const MEMBERS_INFO = useTypedSelector(state => state.chat.MEMBERS_INFO);
 
   const dispatchInputMessage = (text) => {
@@ -27,11 +30,12 @@ export default function Desktop() {
     if (CHAT_HUB.connectionStarted) {
       console.error("Соединение с chathub не установлено");
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Соединение с chathub не установлено" } });
-      return; }
+      return;
+    }
 
     try {
       CHAT_HUB.invoke("SendMessage", INPUT_MESSAGE);
-      // draw my message
+      dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(NEXT_MESSAGE_ID, USERNAME, INPUT_MESSAGE, new Date(), true) });
       dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: "" }); // clear input
     } catch (error) {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: error.message } });

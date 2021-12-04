@@ -1,8 +1,10 @@
+import Message from "../../models/Message";
+
 export interface IChatState {
     CHAT_HUB: any,
     INPUT_MESSAGE: string,
-    MESSAGES: any[],
-    LAST_MESSAGE_ID: number,
+    MESSAGES: Message[],
+    NEXT_MESSAGE_ID: number,
     MEMBERS_INFO: boolean
 }
 
@@ -10,7 +12,7 @@ export enum ChatActionTypes {
     SET_CHAT_HUB = "SET_CHAT_HUB",
     SET_INPUT_MESSAGE = "SET_INPUT_MESSAGE",
     SET_MEMBERS_INFO = "SET_MEMBERS_INFO",
-  
+
     ADD_MESSAGE = "ADD_MESSAGE"
 }
 

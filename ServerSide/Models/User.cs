@@ -3,14 +3,19 @@
     internal class User
     {
         public string ConnectionID { get; }
-        public string Name { get; }
+        public string Username { get; private set; }
+        public bool IsRegistrated { get; private set; }
         public DateTime ConnectedTime { get; }
-        public User(string connectionID, string name)
+        public User(string connectionID)
         {
             ConnectionID = connectionID;
-            Name = name;
-
             ConnectedTime = DateTime.Now;
+        }
+
+        public void Registrate(UserRegistration registration)
+        {
+            Username = registration.Username;
+            IsRegistrated = true;
         }
     }
 }

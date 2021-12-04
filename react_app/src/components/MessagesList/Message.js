@@ -1,6 +1,7 @@
 import styles from "./MessagesList.module.scss";
 
 export default function Message({ data }) {
+    console.log(data);
 
     const getStyles = () => {
         if (data.isMy)
@@ -10,7 +11,7 @@ export default function Message({ data }) {
 
     return (
         <div className={getStyles()}>
-            <span className={styles.login}>{data.login}</span>: <span>{data.text}</span>
+            <span className={styles.username}>{data.username}</span>: <span>{data.text}</span>
         </div>
     )
 }

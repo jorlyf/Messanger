@@ -2,13 +2,13 @@
 {
     internal class Message
     {
-        public string Sender { get; }
+        public string Username { get; }
         public string Text { get; }
         public DateTime Date { get; }
 
-        public Message(string senderName, string text)
+        public Message(string username, string text)
         {
-            Sender = senderName;
+            Username = username;
             Text = text;
 
             Date = DateTime.Now;

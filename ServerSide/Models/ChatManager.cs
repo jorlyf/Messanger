@@ -4,12 +4,12 @@
     {
         public List<User> Users { get; } = new List<User>();
 
-        public bool ConnectUser(string connectionID, string name)
+        public bool ConnectUser(string connectionID)
         {
             if (string.IsNullOrEmpty(connectionID)) return false;
             if (Users.FirstOrDefault(user => user.ConnectionID == connectionID) == null) return false;           
 
-            Users.Add(new User(connectionID, name));
+            Users.Add(new User(connectionID));
             return true;
         }
         public void DisconnectUser(string connectionID)
@@ -18,6 +18,15 @@
             if (user == null) return;
 
             Users.Remove(user);
+        }
+
+        public void RegistrateUser(string connectionID, UserRegistration registration)
+        {
+            User? user = Users.FirstOrDefault(user => user.ConnectionID == connectionID);
+            if (user == null) return;
+            if (user.IsRegistrated) return;
+                 
+            user.Registrate(registration);
         }
 
         public User? GetUserByConnectionID(string connectionID)

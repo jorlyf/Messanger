@@ -1,17 +1,23 @@
 interface IMessage {
-    sender: string,
+    id: number,
+    username: string,
     text: string,
-    date: string
+    date: string,
+    isMy: boolean
 }
 
 export default class Message implements IMessage {
-    public sender: string;
+    public id: number;
+    public username: string;
     public text: string;
     public date: string;
+    public isMy: boolean;
 
-    constructor(_sender: string, _text: string, _date: string) {
-        this.sender = _sender;
-        this.text = _text;
-        this.date = _date;
+    constructor(id: number, username: string, text: string, date: string, isMy: boolean) {
+        this.id = id;
+        this.username = username;
+        this.text = text;
+        this.date = date;
+        this.isMy = isMy;
     }
 }

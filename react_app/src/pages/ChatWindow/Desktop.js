@@ -1,17 +1,16 @@
 import { useDispatch } from "react-redux";
 import useTypedSelector from "../../hooks/useTypedSelector";
 
-import { InputField } from "../../components/InputField";
-import MessagesList from "../../components/MessagesList";
-
 import { AppActionTypes } from "../../redux/types/App";
 import { ChatActionTypes } from "../../redux/types/Chat";
-
 import Message from "../../models/Message";
+
+import MessagesList from "../../components/MessagesList";
+import { InputField } from "../../components/InputField";
 
 import styles from "./ChatWindowDesktop.module.scss";
 
-export default function Desktop() {
+const Desktop = () => {
   const dispatch = useDispatch();
 
   const USERNAME = useTypedSelector(state => state.app.USERNAME);
@@ -26,7 +25,7 @@ export default function Desktop() {
   }
 
   const handleSendMessage = () => {
-    if (INPUT_MESSAGE.length > 10000) return; // 512
+    if (INPUT_MESSAGE.length > 512) return; // 512
     if (CHAT_HUB.connectionStarted) {
       console.error("Соединение с chathub не установлено");
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Соединение с chathub не установлено" } });
@@ -69,3 +68,5 @@ export default function Desktop() {
     </div>
   )
 }
+
+export default Desktop;

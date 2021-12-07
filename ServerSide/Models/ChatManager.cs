@@ -1,37 +1,48 @@
 ﻿namespace ServerSide.Models
 {
-    internal class ChatManager
-    {
-        public List<User> Users { get; } = new List<User>();
+	internal class ChatManager
+	{
+		public List<User> Users { get; } = new List<User>();
+		public uint NextMessageId { get; set; } = 1;
 
-        public bool ConnectUser(string connectionID)
-        {
-            if (string.IsNullOrEmpty(connectionID)) return false;
-            if (Users.FirstOrDefault(user => user.ConnectionID == connectionID) == null) return false;           
 
-            Users.Add(new User(connectionID));
-            return true;
-        }
-        public void DisconnectUser(string connectionID)
-        {
-            User? user = Users.FirstOrDefault(user => user.ConnectionID == connectionID);
-            if (user == null) return;
+		public Message CreateMessage(User user, string text)
+		{
+			return new Message(NextMessageId++, user.Username, text);
+		}
 
-            Users.Remove(user);
-        }
+		public bool ConnectUser(string connectionId)
+		{
+			if (string.IsNullOrEmpty(connectionId)) return false;
+			if (Users.FirstOrDefault(user => user.ConnectionId == connectionId) != null) return false;
 
-        public void RegistrateUser(string connectionID, UserRegistration registration)
-        {
-            User? user = Users.FirstOrDefault(user => user.ConnectionID == connectionID);
-            if (user == null) return;
-            if (user.IsRegistrated) return;
-                 
-            user.Registrate(registration);
-        }
+			Users.Add(new User(connectionId));
+			return true;
+		}
 
-        public User? GetUserByConnectionID(string connectionID)
-        {
-            return Users.FirstOrDefault(user => user.ConnectionID == connectionID);
-        }
-    }
+		public void DisconnectUser(string connectionId)
+		{
+			User? user = Users.FirstOrDefault(user => user.ConnectionId == connectionId);
+			if (user == null) return;
+
+			Users.Remove(user);
+		}
+
+		public bool RegistrateUser(string connectionId, UserRegistration registration)
+		{
+			User? user = Users.FirstOrDefault(user => user.ConnectionId == connectionId);
+			if (user == null) return false;
+			if (user.IsRegistrated) return false;
+
+			if (Users.FirstOrDefault(user => user.Username.ToLower() == registration.Username.ToLower()) != null) return false;
+
+			user.Registrate(registration);
+			return true;
+		}
+
+		public User? GetUserByConnectionID(string connectionId)
+		{
+			return Users.FirstOrDefault(user => user.ConnectionId == connectionId);
+		}
+	}
 }

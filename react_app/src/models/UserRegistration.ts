@@ -1,11 +1,11 @@
 interface IUserRegistration {
-    Name: string
+    username: string
 }
 
 export default class UserRegistration implements IUserRegistration {
-    public Name: string;
+    public username: string;
 
-    constructor(name: string) {
-        this.Name = name;
+    constructor(username: string) {
+        this.username = username;
     }
 }

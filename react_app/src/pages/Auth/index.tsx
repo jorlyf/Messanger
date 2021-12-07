@@ -6,7 +6,7 @@ import { AppActionTypes } from "../../redux/types/App";
 
 import styles from "./Auth.module.scss";
 
-export default function Auth() {
+const Auth = () => {
   const dispatch = useDispatch();
 
   const USERNAME = useTypedSelector(state => state.app.USERNAME);
@@ -17,7 +17,14 @@ export default function Auth() {
   }
 
   const submitAuth = () => {
-    if (USERNAME.length > 30 || USERNAME.length < 3) { console.error("Плохой ввод имени"); return; };
+    if (USERNAME.length > 30) {
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Слишком длинное имя! Введите не более 30 символов" } });
+      return;
+    }
+    if (USERNAME.length < 3) {
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Слишком короткое имя! Введите не менее 3 символов" } });
+      return;
+    }
 
     try {
       const registration: UserRegistration = new UserRegistration(USERNAME);
@@ -39,3 +46,5 @@ export default function Auth() {
     </div>
   )
 }
+
+export default Auth;

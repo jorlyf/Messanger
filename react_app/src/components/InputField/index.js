@@ -14,7 +14,7 @@ export function InputField({ value, dispatchFunction, placeholder, minRows = 1, 
     }
   }
   const handleUnfocus = () => {
-    const newValue = trimString(value);
+    const newValue = trimString(value); // trimmed
     dispatchFunction(newValue);
   }
 

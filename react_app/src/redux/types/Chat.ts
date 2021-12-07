@@ -32,5 +32,5 @@ interface I_SET_MEMBERS_INFO_ACTION {
 }
 interface I_ADD_MESSAGE_ACTION {
     type: ChatActionTypes.ADD_MESSAGE,
-    payload: any
+    payload: Message
 }

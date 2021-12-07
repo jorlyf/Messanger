@@ -1,21 +1,20 @@
 ﻿namespace ServerSide.Models
 {
-    internal class User
-    {
-        public string ConnectionID { get; }
-        public string Username { get; private set; }
-        public bool IsRegistrated { get; private set; }
-        public DateTime ConnectedTime { get; }
-        public User(string connectionID)
-        {
-            ConnectionID = connectionID;
-            ConnectedTime = DateTime.Now;
-        }
+	internal class User
+	{
+		public string ConnectionId { get; }
+		public string Username { get; private set; } = "Anon";
+		public bool IsRegistrated { get; private set; } = false;
+		public DateTime ConnectedTime { get; } = DateTime.Now;
+		public User(string connectionId)
+		{
+			ConnectionId = connectionId;
+		}
 
-        public void Registrate(UserRegistration registration)
-        {
-            Username = registration.Username;
-            IsRegistrated = true;
-        }
-    }
+		public void Registrate(UserRegistration registration)
+		{
+			Username = registration.Username;
+			IsRegistrated = true;
+		}
+	}
 }

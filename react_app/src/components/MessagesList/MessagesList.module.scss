@@ -1,6 +1,10 @@
 %message-base {
     margin: 6px 0px;
-    padding: 4px;
+    padding: 6px;
+
+    span {
+        white-space: pre-line;
+    }
 }
 .message {
     @extend %message-base;
@@ -9,10 +13,13 @@
 .mymessage {
     @extend %message-base;
     margin-left: 50px;
-    background-color: rgba(200, 250, 255, 0.25);
-    border-radius: 15px;
+
+    background-color: rgba(255, 200, 200, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .username {
+    display: block;
     font-weight: bold;
 }

@@ -4,13 +4,11 @@ const initialState: IChatState = {
   CHAT_HUB: undefined,
   INPUT_MESSAGE: "",
   MESSAGES: [],
-  NEXT_MESSAGE_ID: 0,
+  NEXT_MESSAGE_ID: 1,
   MEMBERS_INFO: true
 }
 
 export const Chat = (state: IChatState = initialState, action: IChatAction): IChatState => {
-  console.log(action);
-
   switch (action.type) {
     case ChatActionTypes.SET_CHAT_HUB:
       return { ...state, CHAT_HUB: action.payload };

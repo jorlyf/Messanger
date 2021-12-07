@@ -1,12 +1,15 @@
-﻿namespace ServerSide.Models
-{
-    internal class UserRegistration
-    {
-        public string Username { get; set; }
+﻿using System.Text.Json.Serialization;
 
-        public UserRegistration(string username)
-        {
-            Username = username;
-        }
-    }
+namespace ServerSide.Models
+{
+	internal class UserRegistration
+	{
+		[JsonPropertyName("username")]
+		public string Username { get; set; }
+
+		public UserRegistration(string username)
+		{
+			Username = username;
+		}
+	}
 }

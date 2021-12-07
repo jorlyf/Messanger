@@ -1,17 +1,17 @@
 ﻿namespace ServerSide.Models
 {
-    internal class Message
-    {
-        public string Username { get; }
-        public string Text { get; }
-        public DateTime Date { get; }
+	internal class Message
+	{
+		public uint Id { get; set; }
+		public string Username { get; set; }
+		public string Text { get; set; }
+		public DateTime Date { get; } = DateTime.Now;
 
-        public Message(string username, string text)
-        {
-            Username = username;
-            Text = text;
-
-            Date = DateTime.Now;
-        }
-    }
+		public Message(uint id, string username, string text)
+		{
+			Id = id;
+			Username = username;
+			Text = text;
+		}
+	}
 }

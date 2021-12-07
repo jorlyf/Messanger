@@ -15,7 +15,6 @@ export function ChatWindow() {
 
 
   const IS_AUTHORIZED = useTypedSelector(state => state.app.IS_AUTHORIZED);
-  const LAST_MESSAGE_ID = useTypedSelector(state => state.chat.LAST_MESSAGE_ID);
 
   React.useEffect(() => {
     try {
@@ -24,20 +23,23 @@ export function ChatWindow() {
         .withAutomaticReconnect()
         .build();
 
+      chatHub.onclose(() => {
+        dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Ошибка соединения" } });
+      })
       chatHub.start().catch(error => {
         dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: error.message } });
         console.error(error.message);
       });
-      chatHub.on("ReceiveMessage", (jsonMessage) => {
-        console.log(jsonMessage);
-        dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(LAST_MESSAGE_ID, jsonMessage.Username, jsonMessage.Text, jsonMessage.Date, false) })
+      chatHub.on("ReceiveMessage", (stringMessage) => {
+        const jsonMessage = JSON.parse(stringMessage);
+        dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Date, false) })
       });
       chatHub.on("ReceiveRegistrationAnswer", (status) => {
         if (status == "ok")
           dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
         else {
           dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: false });
-          dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "ошибка регистрации" } });
+          dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Ошибка регистрации. Ваше имя уже кем-то занято!" } });
         }
 
       });

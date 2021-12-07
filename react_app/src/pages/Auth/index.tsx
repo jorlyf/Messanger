@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import useTypedSelector from "../../hooks/useTypedSelector";
+import Notification from "../../models/Notification";
 import UserRegistration from "../../models/UserRegistration";
 
 import { AppActionTypes } from "../../redux/types/App";
@@ -18,11 +19,17 @@ const Auth = () => {
 
   const submitAuth = () => {
     if (USERNAME.length > 30) {
-      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Слишком длинное имя! Введите не более 30 символов" } });
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком длинное имя! Введите не более 30 символов") });
       return;
     }
     if (USERNAME.length < 3) {
-      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Слишком короткое имя! Введите не менее 3 символов" } });
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком короткое имя! Введите не менее 3 символов") });
+      return;
+    }
+
+    if (CHAT_HUB === undefined)
+    {
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение не установилось!") });
       return;
     }
 

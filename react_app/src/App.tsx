@@ -1,14 +1,13 @@
 import { ChatWindow } from "./pages/ChatWindow";
 
 import styles from "./App.module.scss";
-import Notifications from "./components/Notifications";
+import ModalNotifications from "./components/ModalNotifications";
 
-// точка входа
 const App = () => {
   return (
     <div className={styles.Main}>
       <ChatWindow />
-      <Notifications />
+      <ModalNotifications />
     </div>
   );
 }

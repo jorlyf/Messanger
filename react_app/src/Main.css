@@ -12,4 +12,5 @@ button {
   border: 1px solid rgba(0, 0, 0, 0.05);
   background-color: mintcream;
   font-size: 16px;
+  cursor: pointer;
 }

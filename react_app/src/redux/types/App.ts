@@ -1,8 +1,10 @@
+import Notification from "../../models/Notification";
+
 export interface IAppState {
   IS_MOBILE: boolean,
   IS_AUTHORIZED: boolean,
   USERNAME: string,
-  NOTIFICATIONS: any[]
+  NOTIFICATIONS: Notification[]
 }
 
 export enum AppActionTypes {
@@ -29,7 +31,7 @@ interface I_SET_USERNAME_ACTION {
 }
 interface I_ADD_NOTIFICATION_ACTION {
   type: AppActionTypes.ADD_NOTIFICATION,
-  payload: any 
+  payload: Notification 
 }
 interface I_DELETE_NOTIFICATION_ACTION {
   type: AppActionTypes.DELETE_NOTIFICATION,

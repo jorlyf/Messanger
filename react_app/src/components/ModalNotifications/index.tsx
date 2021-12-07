@@ -3,13 +3,16 @@ import useTypedSelector from "../../hooks/useTypedSelector";
 
 import { AppActionTypes } from "../../redux/types/App";
 import { CancelButton } from "../Buttons";
+
+import Notification from "../../models/Notification";
+
 import styles from "./Notifications.module.scss";
 
-export default function Notifications() {
+export const ModalNotifications = () => {
     const dispatch = useDispatch();
-    const NOTIFICATIONS = useTypedSelector(state => state.app.NOTIFICATIONS);
+    const NOTIFICATIONS: Notification[] = useTypedSelector(state => state.app.NOTIFICATIONS);
 
-    const handleClose = (index) => {
+    const handleClose = (index: number) => {
         dispatch({ type: AppActionTypes.DELETE_NOTIFICATION, payload: index });
     }
 
@@ -24,3 +27,5 @@ export default function Notifications() {
         </div>
     )
 }
+
+export default ModalNotifications;

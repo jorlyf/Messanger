@@ -3,7 +3,9 @@ import useTypedSelector from "../../hooks/useTypedSelector";
 
 import { AppActionTypes } from "../../redux/types/App";
 import { ChatActionTypes } from "../../redux/types/Chat";
+
 import Message from "../../models/Message";
+import Notification from "../../models/Notification";
 
 import MessagesList from "../../components/MessagesList";
 import { InputField } from "../../components/InputField";
@@ -28,7 +30,7 @@ const Desktop = () => {
     if (INPUT_MESSAGE.length > 512) return; // 512
     if (CHAT_HUB.connectionStarted) {
       console.error("Соединение с chathub не установлено");
-      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Соединение с chathub не установлено" } });
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение с chathub не установлено") });
       return;
     }
 
@@ -37,7 +39,7 @@ const Desktop = () => {
       dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(NEXT_MESSAGE_ID, USERNAME, INPUT_MESSAGE, new Date(), true) });
       dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: "" }); // clear input
     } catch (error) {
-      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: error.message } });
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
       console.error(error.message);
     }
   }

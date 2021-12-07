@@ -6,8 +6,10 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import { AppActionTypes } from "../../redux/types/App";
 import { ChatActionTypes } from "../../redux/types/Chat";
 
-import Desktop from "./Desktop";
 import Message from "../../models/Message";
+import Notification from "../../models/Notification";
+
+import Desktop from "./Desktop";
 import Auth from "../Auth";
 
 export function ChatWindow() {
@@ -22,14 +24,8 @@ export function ChatWindow() {
         .withUrl("https://localhost:7115/chathub")
         .withAutomaticReconnect()
         .build();
-
-      chatHub.onclose(() => {
-        dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Ошибка соединения" } });
-      })
-      chatHub.start().catch(error => {
-        dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: error.message } });
-        console.error(error.message);
-      });
+      
+      // handle events
       chatHub.on("ReceiveMessage", (stringMessage) => {
         const jsonMessage = JSON.parse(stringMessage);
         dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Date, false) })
@@ -39,15 +35,24 @@ export function ChatWindow() {
           dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
         else {
           dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: false });
-          dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: "Ошибка регистрации. Ваше имя уже кем-то занято!" } });
+          dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Ошибка регистрации. Ваше имя уже кем-то занято!") });
         }
+      });
 
+      chatHub.onclose(() => {
+        dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Ошибка соединения") });
+      })
+
+      // connect
+      chatHub.start().catch(error => {
+        dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
+        console.error(error.message);
       });
 
       dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: chatHub });
 
     } catch (error) {
-      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: { message: error.message } });
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
       console.error(error.message);
     }
   }, []);

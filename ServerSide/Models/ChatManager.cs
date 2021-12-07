@@ -19,7 +19,6 @@
 			Users.Add(new User(connectionId));
 			return true;
 		}
-
 		public void DisconnectUser(string connectionId)
 		{
 			User? user = Users.FirstOrDefault(user => user.ConnectionId == connectionId);

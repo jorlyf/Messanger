@@ -5,7 +5,8 @@ const initialState: IChatState = {
   INPUT_MESSAGE: "",
   MESSAGES: [],
   NEXT_MESSAGE_ID: 1,
-  MEMBERS_INFO: true
+  IS_MEMBERS_INFO: true,
+  MEMBERS_LIST: []
 }
 
 export const Chat = (state: IChatState = initialState, action: IChatAction): IChatState => {
@@ -16,8 +17,11 @@ export const Chat = (state: IChatState = initialState, action: IChatAction): ICh
     case ChatActionTypes.SET_INPUT_MESSAGE:
       return { ...state, INPUT_MESSAGE: action.payload };
 
-    case ChatActionTypes.SET_MEMBERS_INFO:
-      return { ...state, MEMBERS_INFO: action.payload };
+    case ChatActionTypes.SET_IS_MEMBERS_INFO:
+      return { ...state, IS_MEMBERS_INFO: action.payload };
+    
+    case ChatActionTypes.SET_MEMBERS_LIST:
+      return { ...state, MEMBERS_LIST: action.payload };
 
 
     case ChatActionTypes.ADD_MESSAGE:

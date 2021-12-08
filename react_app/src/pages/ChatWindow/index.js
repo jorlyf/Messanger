@@ -24,7 +24,7 @@ export function ChatWindow() {
         .withUrl("https://localhost:7115/chathub")
         .withAutomaticReconnect()
         .build();
-      
+
       // handle events
       chatHub.on("ReceiveMessage", (stringMessage) => {
         const jsonMessage = JSON.parse(stringMessage);
@@ -37,6 +37,11 @@ export function ChatWindow() {
           dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: false });
           dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Ошибка регистрации. Ваше имя уже кем-то занято!") });
         }
+      });
+      chatHub.on("ReceiveMembersInfo", (stringMembersInfo) => {
+        const jsonMembersInfo = JSON.parse(stringMembersInfo);
+        console.log(jsonMembersInfo); // посмотреть в каком виде пришло
+        dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonMembersInfo.Users });
       });
 
       chatHub.onclose(() => {

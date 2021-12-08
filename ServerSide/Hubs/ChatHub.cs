@@ -7,12 +7,17 @@ namespace ServerSide.Hubs
 	internal class ChatHub : Hub
 	{
 		private readonly static ChatManager ChatManager = new ChatManager();
+		public ChatHub()
+		{
+			ChatManager.OnUsersUpdate += this.SendMembersInfo;
+		}
+
 		public async Task SendMessage(string messageText)
 		{
 			User? user = ChatManager.GetUserByConnectionID(Context.ConnectionId);
 			if (user == null) return;
 			if (!user.IsRegistrated) return;
-			
+
 			Message message = ChatManager.CreateMessage(user, messageText);
 			string jsonMessage = JsonHelper.Serialize(message);
 			await this.Clients.Others.SendAsync("ReceiveMessage", jsonMessage);
@@ -26,6 +31,12 @@ namespace ServerSide.Hubs
 				await this.Clients.Caller.SendAsync("ReceiveRegistrationAnswer", "ok");
 			else
 				await this.Clients.Caller.SendAsync("ReceiveRegistrationAnswer", "error");
+		}
+		public async Task SendMembersInfo()
+		{
+			MembersInfo membersInfo = ChatManager.CreateMembersInfo();
+			string jsonMembersInfo = JsonHelper.Serialize(membersInfo);
+			await this.Clients.All.SendAsync("ReceiveMembersInfo", jsonMembersInfo);
 		}
 
 		public override Task OnConnectedAsync()

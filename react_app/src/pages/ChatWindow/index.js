@@ -15,7 +15,6 @@ import Auth from "../Auth";
 export function ChatWindow() {
   const dispatch = useDispatch();
 
-
   const IS_AUTHORIZED = useTypedSelector(state => state.app.IS_AUTHORIZED);
 
   React.useEffect(() => {

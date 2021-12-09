@@ -1,8 +1,11 @@
-﻿namespace ServerSide.Models
+﻿using System.Collections.Concurrent;
+
+namespace ServerSide.Models
 {
 	internal class ChatManager
 	{
 		public List<User> Users { get; } = new List<User>();
+		public ConcurrentList<User> Users2 { get; }
 
 		public delegate Task Update(); 
 		public event Update OnUsersUpdate;

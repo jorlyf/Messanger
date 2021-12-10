@@ -21,7 +21,10 @@ const MessageComponent = ({ message }: { message: Message }) => {
 
     return (
         <div className={getStyles()}>
-            <span className={styles.username}>{message.username}</span>
+            <div className={styles.messageHeader}>
+                <span className={styles.username}>{message.username}</span>
+                <span className={styles.time}>{message.time}</span>
+            </div>
             <span>{message.text}</span>
         </div>
     )

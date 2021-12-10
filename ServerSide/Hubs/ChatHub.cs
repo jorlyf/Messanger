@@ -6,9 +6,10 @@ namespace ServerSide.Hubs
 {
 	internal class ChatHub : Hub
 	{
-		private readonly static ChatManager ChatManager = new ChatManager();
-		public ChatHub()
+		private readonly ChatManager ChatManager;
+		public ChatHub(ChatManager chatManager)
 		{
+			ChatManager = chatManager;
 			ChatManager.OnUsersUpdate += this.SendMembersInfo;
 		}
 

@@ -6,7 +6,7 @@ const initialState: IChatState = {
   MESSAGES: [],
   NEXT_MESSAGE_ID: 1,
   IS_MEMBERS_INFO: true,
-  MEMBERS_LIST: []
+  MEMBERS_LIST: { Usernames: [], Date: ""}
 }
 
 export const Chat = (state: IChatState = initialState, action: IChatAction): IChatState => {

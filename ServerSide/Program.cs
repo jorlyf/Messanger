@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using ServerSide.Hubs;
+using ServerSide.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSingleton<ChatManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +38,7 @@ app.UseHttpsRedirection();
 app.UseCors("ClientPermission");
 
 app.UseRouting();
+
 
 app.UseAuthorization();
 

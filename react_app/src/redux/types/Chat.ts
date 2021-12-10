@@ -1,13 +1,12 @@
 import Message from "../../models/Message";
-import User from "../../models/User";
 
 export interface IChatState {
-    CHAT_HUB: any,
-    INPUT_MESSAGE: string,
-    MESSAGES: Message[],
-    NEXT_MESSAGE_ID: number,
-    IS_MEMBERS_INFO: boolean,
-    MEMBERS_LIST: User[]
+    CHAT_HUB: any;
+    INPUT_MESSAGE: string;
+    MESSAGES: Message[];
+    NEXT_MESSAGE_ID: number;
+    IS_MEMBERS_INFO: boolean;
+    MEMBERS_LIST: { Usernames: string[], Date: string };
 }
 
 export enum ChatActionTypes {
@@ -35,7 +34,7 @@ interface I_SET_IS_MEMBERS_INFO_ACTION {
 }
 interface I_SET_MEMBERS_LIST_ACTION {
     type: ChatActionTypes.SET_MEMBERS_LIST,
-    payload: User[]
+    payload: { Usernames: string[], Date: string }
 }
 interface I_ADD_MESSAGE_ACTION {
     type: ChatActionTypes.ADD_MESSAGE,

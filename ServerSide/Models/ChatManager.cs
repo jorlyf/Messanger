@@ -1,26 +1,22 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 
 namespace ServerSide.Models
 {
 	internal class ChatManager
 	{
-		public List<User> Users { get; } = new List<User>();
-		public ConcurrentList<User> Users2 { get; }
+		public SynchronizedCollection<User> Users { get; } = new SynchronizedCollection<User>();
 
 		public delegate Task Update(); 
 		public event Update OnUsersUpdate;
 		public uint NextMessageId { get; set; } = 1;
 
 
-		public Message CreateMessage(User user, string text)
-		{
-			return new Message(NextMessageId++, user.Username, text);
-		}
+		public Message CreateMessage(User user, string text) => new Message(NextMessageId++, user.Username, text);
 
 		public MembersInfo CreateMembersInfo()
 		{
-			List<User> authorizedUsers = new List<User>(Users.Where(user => user.IsRegistrated));
-			return new MembersInfo(Users);
+			List<string> authorizedUsers = new List<string>(Users.Where(u => u.IsRegistrated).Select(u => u.Username));
+			return new MembersInfo(authorizedUsers);
 		}
 
 		public bool ConnectUser(string connectionId)

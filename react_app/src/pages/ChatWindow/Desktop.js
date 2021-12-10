@@ -36,7 +36,8 @@ const Desktop = () => {
 
     try {
       CHAT_HUB.invoke("SendMessage", INPUT_MESSAGE);
-      dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(NEXT_MESSAGE_ID, USERNAME, INPUT_MESSAGE, new Date(), true) });
+      const currentTime = new Date().toLocaleTimeString('ru', { hour12: false, hour: "numeric", minute: "numeric" });
+      dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(NEXT_MESSAGE_ID, USERNAME, INPUT_MESSAGE, currentTime, true) });
       dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: "" }); // clear input
     } catch (error) {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });

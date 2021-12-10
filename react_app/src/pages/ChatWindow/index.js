@@ -27,10 +27,11 @@ export function ChatWindow() {
       // handle events
       chatHub.on("ReceiveMessage", (stringMessage) => {
         const jsonMessage = JSON.parse(stringMessage);
-        dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Date, false) })
+        console.log(jsonMessage);
+        dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) })
       });
       chatHub.on("ReceiveRegistrationAnswer", (status) => {
-        if (status == "ok")
+        if (status === "ok")
           dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
         else {
           dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: false });
@@ -40,7 +41,7 @@ export function ChatWindow() {
       chatHub.on("ReceiveMembersInfo", (stringMembersInfo) => {
         const jsonMembersInfo = JSON.parse(stringMembersInfo);
         console.log(jsonMembersInfo); // посмотреть в каком виде пришло
-        dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonMembersInfo.Users });
+        dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonMembersInfo });
       });
 
       chatHub.onclose(() => {
@@ -59,7 +60,7 @@ export function ChatWindow() {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
       console.error(error.message);
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

@@ -1,11 +1,13 @@
-﻿namespace ServerSide.Models
+﻿using ServerSide.Utils;
+
+namespace ServerSide.Models
 {
 	internal class Message
 	{
 		public uint Id { get; set; }
 		public string Username { get; set; }
 		public string Text { get; set; }
-		public DateTime Date { get; } = DateTime.Now;
+		public string Time { get; } = TimeService.TimeOfDay;
 
 		public Message(uint id, string username, string text)
 		{

@@ -1,12 +1,14 @@
-﻿namespace ServerSide.Models
+﻿using ServerSide.Utils;
+
+namespace ServerSide.Models
 {
 	internal class MembersInfo
 	{
-		public List<User> Users { get; }
-		public DateTime Date { get; } = DateTime.Now;
-		public MembersInfo(List<User> users)
+		public List<string> Usernames { get; }
+		public DateTime Date { get; } = TimeService.FullDate;
+		public MembersInfo(IEnumerable<string> usernanemes)
 		{
-			Users = users;
+			Usernames = (List<string>)usernanemes;
 		}
 	}
 }

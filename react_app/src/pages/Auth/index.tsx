@@ -26,10 +26,9 @@ const Auth = () => {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком короткое имя! Введите не менее 3 символов") });
       return;
     }
-
-    if (CHAT_HUB === undefined)
-    {
-      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение не установилось!") });
+    
+    if (CHAT_HUB._connectionState !== "Connected") {
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение не установлено!") });
       return;
     }
 

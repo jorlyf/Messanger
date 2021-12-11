@@ -10,49 +10,49 @@ import Notification from "../models/Notification";
 
 const useChatHub = () => {
     const dispatch = useDispatch();
-    
+
     React.useEffect((): any => {
-        try {
-            const chatHub = new HubConnectionBuilder()
-                .withUrl("https://localhost:7115/chathub")
-                .withAutomaticReconnect()
-                .build();
+        const chatHub = new HubConnectionBuilder()
+            .withUrl("https://localhost:7115/chathub")
+            .withAutomaticReconnect()
+            .build();
 
-            // handle events
-            chatHub.on("ReceiveMessage", (stringMessage) => {
-                const jsonMessage = JSON.parse(stringMessage);
-                dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) })
-            });
-            chatHub.on("ReceiveRegistrationAnswer", (status) => {
-                if (status === "ok")
-                    dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
-                else {
-                    dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: false });
-                    dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Ошибка регистрации. Ваше имя уже кем-то занято!") });
-                }
-            });
-            chatHub.on("ReceiveMembersInfo", (stringMembersInfo) => {
-                const jsonMembersInfo = JSON.parse(stringMembersInfo);
-                dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonMembersInfo });
-            });
+        // handle events
+        chatHub.on("ReceiveMessage", (stringMessage) => {
+            const jsonMessage = JSON.parse(stringMessage);
+            dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) })
+        });
+        chatHub.on("ReceiveRegistrationAnswer", (status) => {
+            if (status === "ok")
+                dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
+            else {
+                dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: false });
+                dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Ошибка регистрации. Ваше имя уже кем-то занято!") });
+            }
+        });
+        chatHub.on("ReceiveMembersInfo", (stringMembersInfo) => {
+            const jsonMembersInfo = JSON.parse(stringMembersInfo);
+            dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonMembersInfo });
+        });
 
-            chatHub.onclose(() => {
-                dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение было закрыто") });
-            })
+        chatHub.onclose(() => {
+            dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение было закрыто") });
+        })
 
-            // connect
-            chatHub.start().catch(error => {
-                dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
-                console.error(error.message);
-            });
-            
-            return chatHub;
-
-        } catch (error: any) {
+        // connect
+        chatHub.start().catch(error => {
             dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
             console.error(error.message);
+        });
+
+        dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: chatHub });
+
+
+        return () => {
+            dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: undefined });
         }
-    }, []);
+
+    }, [dispatch]);
 }
 
 export default useChatHub;

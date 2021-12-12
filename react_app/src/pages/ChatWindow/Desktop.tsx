@@ -8,7 +8,7 @@ import Message from "../../models/Message";
 import Notification from "../../models/Notification";
 
 import MessagesList from "../../components/MessagesList";
-import { InputField } from "../../components/InputField";
+import InputField from "../../components/InputField";
 
 import styles from "./ChatWindowDesktop.module.scss";
 
@@ -20,15 +20,15 @@ const Desktop = () => {
   const INPUT_MESSAGE = useTypedSelector(state => state.chat.INPUT_MESSAGE);
   const MESSAGES = useTypedSelector(state => state.chat.MESSAGES);
   const NEXT_MESSAGE_ID = useTypedSelector(state => state.chat.NEXT_MESSAGE_ID);
-  const MEMBERS_INFO = useTypedSelector(state => state.chat.MEMBERS_INFO);
+  const MEMBERS_LIST = useTypedSelector(state => state.chat.MEMBERS_LIST);
 
-  const dispatchInputMessage = (text) => {
+  const dispatchInputMessage = (text: string) => {
     dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: text });
   }
 
   const handleSendMessage = () => {
     if (INPUT_MESSAGE.length > 512) return; // 512
-    if (CHAT_HUB.connectionStarted) {
+    if (CHAT_HUB._connectionState !== "Connected") {
       console.error("Соединение с chathub не установлено");
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение с chathub не установлено") });
       return;
@@ -39,7 +39,7 @@ const Desktop = () => {
       const currentTime = new Date().toLocaleTimeString('ru', { hour12: false, hour: "numeric", minute: "numeric" });
       dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(NEXT_MESSAGE_ID, USERNAME, INPUT_MESSAGE, currentTime, true) });
       dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: "" }); // clear input
-    } catch (error) {
+    } catch (error: any) {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
       console.error(error.message);
     }
@@ -48,7 +48,7 @@ const Desktop = () => {
   return (
     <div className={styles.Main}>
       <div className={styles.Chat}>
-        <div className={styles.Messages} >
+        <div className={styles.Messages} id={"messages-list"} >
           <MessagesList messages={MESSAGES} />
         </div>
 

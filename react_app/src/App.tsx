@@ -1,7 +1,7 @@
-import { ChatWindow } from "./pages/ChatWindow";
+import ChatWindow from "./pages/ChatWindow";
+import ModalNotifications from "./components/ModalNotifications";
 
 import styles from "./App.module.scss";
-import ModalNotifications from "./components/ModalNotifications";
 
 const App = () => {
   return (

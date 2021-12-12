@@ -4,7 +4,7 @@ import useChatHub from "../../hooks/useChatHub";
 import Desktop from "./Desktop";
 import Auth from "../Auth";
 
-export function ChatWindow() {
+const ChatWindow = () => {
   const IS_AUTHORIZED = useTypedSelector(state => state.app.IS_AUTHORIZED);
 
   useChatHub();
@@ -15,3 +15,5 @@ export function ChatWindow() {
     </>
   )
 }
+
+export default ChatWindow;

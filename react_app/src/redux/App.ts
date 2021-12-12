@@ -3,6 +3,7 @@ import { IAppState, IAppAction, AppActionTypes } from "./types/App";
 const initialState: IAppState = {
   IS_MOBILE: false,
   IS_AUTHORIZED: false,
+  AUTH_IS_PENDING: false,
   USERNAME: "",
   NOTIFICATIONS: []
 }
@@ -15,6 +16,9 @@ export const App = (state: IAppState = initialState, action: IAppAction): IAppSt
 
     case AppActionTypes.SET_IS_AUTHORIZED:
       return { ...state, IS_AUTHORIZED: action.payload };
+
+    case AppActionTypes.SET_AUTH_IS_PENDING:
+      return { ...state, AUTH_IS_PENDING: action.payload };
 
     case AppActionTypes.SET_USERNAME:
       return { ...state, USERNAME: action.payload };

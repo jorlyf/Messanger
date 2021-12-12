@@ -5,6 +5,8 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import { AppActionTypes } from "../redux/types/App";
 import { ChatActionTypes } from "../redux/types/Chat";
 
+import { scrollDown, isScrolledDown } from "../utils";
+
 import Message from "../models/Message";
 import Notification from "../models/Notification";
 
@@ -18,11 +20,15 @@ const useChatHub = () => {
             .build();
 
         // handle events
-        chatHub.on("ReceiveMessage", (stringMessage) => {
+        chatHub.on("ReceiveMessage", (stringMessage: string) => {
             const jsonMessage = JSON.parse(stringMessage);
-            dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) })
+            const isDown: boolean = isScrolledDown("messages-list");
+            console.log(isDown);
+            
+            dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) });
+            if (isDown) scrollDown("messages-list");
         });
-        chatHub.on("ReceiveRegistrationAnswer", (status) => {
+        chatHub.on("ReceiveRegistrationAnswer", (status: string) => {
             if (status === "ok")
                 dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
             else {
@@ -30,7 +36,7 @@ const useChatHub = () => {
                 dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Ошибка регистрации. Ваше имя уже кем-то занято!") });
             }
         });
-        chatHub.on("ReceiveMembersInfo", (stringMembersInfo) => {
+        chatHub.on("ReceiveMembersInfo", (stringMembersInfo: string) => {
             const jsonMembersInfo = JSON.parse(stringMembersInfo);
             dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonMembersInfo });
         });
@@ -47,7 +53,7 @@ const useChatHub = () => {
 
         dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: chatHub });
 
-
+        // onUnmount
         return () => {
             dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: undefined });
         }

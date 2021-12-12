@@ -1,7 +1,8 @@
 const MembersInfo = () => {
     return (
-        <>
-        </>
+        <div>
+            
+        </div>
     );
 }
 

@@ -3,7 +3,7 @@ import { trimString } from '../../utils';
 
 import styles from "./InputField.module.scss";
 
-export function InputField({ value, dispatchFunction, placeholder, minRows = 1, maxRows = 6, isOneRow = false }) {
+const InputField = ({ value, dispatchFunction, placeholder, minRows = 1, maxRows = 6, isOneRow = false }) => {
 
   const handleChange = (e) => {
     dispatchFunction(e.target.value);
@@ -32,3 +32,5 @@ export function InputField({ value, dispatchFunction, placeholder, minRows = 1, 
     />
   );
 }
+
+export default InputField;

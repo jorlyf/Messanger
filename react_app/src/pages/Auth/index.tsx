@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import useTypedSelector from "../../hooks/useTypedSelector";
 import Notification from "../../models/Notification";
@@ -10,6 +11,8 @@ import styles from "./Auth.module.scss";
 const Auth = () => {
   const dispatch = useDispatch();
 
+
+  const AUTH_IS_PENDING = useTypedSelector(state => state.app.AUTH_IS_PENDING);
   const USERNAME = useTypedSelector(state => state.app.USERNAME);
   const CHAT_HUB = useTypedSelector(state => state.chat.CHAT_HUB);
 
@@ -26,13 +29,14 @@ const Auth = () => {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком короткое имя! Введите не менее 3 символов") });
       return;
     }
-    
+
     if (CHAT_HUB._connectionState !== "Connected") {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение не установлено!") });
       return;
     }
 
     try {
+      dispatch({ type: AppActionTypes.SET_AUTH_IS_PENDING, payload: true });
       const registration: UserRegistration = new UserRegistration(USERNAME);
       CHAT_HUB.invoke("Registrate", JSON.stringify(registration));
     } catch (error: any) {
@@ -46,6 +50,7 @@ const Auth = () => {
       <input
         value={USERNAME}
         placeholder={"Имя"}
+        disabled={AUTH_IS_PENDING}
         onChange={(e) => setUsername(e.target.value)}
       />
       <button onClick={submitAuth} value={"Войти"}>Войти</button>

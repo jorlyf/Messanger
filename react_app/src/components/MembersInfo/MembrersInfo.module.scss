@@ -1,0 +1,17 @@
+.list {
+    list-style-type: none;
+    font-style     : italic;
+    padding        : 4px;
+    width          : max-content;
+
+    .onlineIcon {
+        position: relative;
+        display         : inline-block;
+        width           : 10px;
+        height          : 10px;
+        border          : 1px solid rgba(0, 0, 0, 0.2);
+        background-color: lightgreen;
+        border-radius   : 50%;
+        top: 2px;
+    }
+}

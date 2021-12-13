@@ -11,6 +11,7 @@ import MessagesList from "../../components/MessagesList";
 import InputField from "../../components/InputField";
 
 import styles from "./ChatWindowDesktop.module.scss";
+import MembersInfo from "../../components/MembersInfo";
 
 const Desktop = () => {
   const dispatch = useDispatch();
@@ -65,7 +66,7 @@ const Desktop = () => {
       </div>
 
       <div className={styles.MembersInfo}>
-
+        <MembersInfo membersList={MEMBERS_LIST} />
       </div>
 
     </div>

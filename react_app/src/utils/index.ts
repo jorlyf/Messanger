@@ -17,6 +17,5 @@ export const scrollDown = (elementName: string) => {
 export const isScrolledDown = (elementName: string) => {
   const element: HTMLElement | null = getElement(elementName);
   if (!element) return false;
-  console.log(element.scrollTop, (element.scrollHeight - element.offsetHeight));   
-  return element.scrollTop === (element.scrollHeight - element.offsetHeight);
+  return element.scrollTop >= (element.scrollHeight - element.offsetHeight);
 }

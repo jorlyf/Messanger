@@ -1,6 +1,6 @@
 .main {
     width    : 25%;
-    height   : 20%;
+    height   : auto;
     min-width: 600px;
   
     position : absolute;
@@ -18,13 +18,14 @@
 
     input {
         margin: auto;
+        border: 1px solid black;
         font-size: 24px;
         display: block;
         text-align: center;
     }
     button {
         margin: auto;
-        margin-top: 50px;
+        margin-top: 30px;
         display: block;
     }
 }

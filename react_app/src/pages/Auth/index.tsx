@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import useTypedSelector from "../../hooks/useTypedSelector";
 import Notification from "../../models/Notification";
@@ -11,7 +10,6 @@ import styles from "./Auth.module.scss";
 const Auth = () => {
   const dispatch = useDispatch();
 
-
   const AUTH_IS_PENDING = useTypedSelector(state => state.app.AUTH_IS_PENDING);
   const USERNAME = useTypedSelector(state => state.app.USERNAME);
   const CHAT_HUB = useTypedSelector(state => state.chat.CHAT_HUB);
@@ -21,8 +19,8 @@ const Auth = () => {
   }
 
   const submitAuth = () => {
-    if (USERNAME.length > 30) {
-      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком длинное имя! Введите не более 30 символов") });
+    if (USERNAME.length > 16) {
+      dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком длинное имя! Введите не более 16 символов") });
       return;
     }
     if (USERNAME.length < 3) {
@@ -40,6 +38,7 @@ const Auth = () => {
       const registration: UserRegistration = new UserRegistration(USERNAME);
       CHAT_HUB.invoke("Registrate", JSON.stringify(registration));
     } catch (error: any) {
+      dispatch({ type: AppActionTypes.SET_AUTH_IS_PENDING, payload: false });
       console.error(error.message);
     }
   }

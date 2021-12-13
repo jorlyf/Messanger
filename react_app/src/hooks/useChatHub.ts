@@ -23,7 +23,6 @@ const useChatHub = () => {
         chatHub.on("ReceiveMessage", (stringMessage: string) => {
             const jsonMessage = JSON.parse(stringMessage);
             const isDown: boolean = isScrolledDown("messages-list");
-            console.log(isDown);
             
             dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) });
             if (isDown) scrollDown("messages-list");

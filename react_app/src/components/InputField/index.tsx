@@ -2,6 +2,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { trimString } from '../../utils';
 
 import styles from "./InputField.module.scss";
+
 interface IInputField {
   value: string;
   dispatchFunction: (value: string) => void;
@@ -11,16 +12,17 @@ interface IInputField {
   maxRows?: number;
   isOneRow?: boolean;
 }
-const InputField = ({ value, dispatchFunction, placeholder, handleEnter, minRows = 1, maxRows = 6, isOneRow = false }: IInputField) => {
 
+const InputField = ({ value, dispatchFunction, placeholder, handleEnter, minRows = 1, maxRows = 6, isOneRow = false }: IInputField) => {
   const handleChange = (e: any) => {
-    console.log(e);
-    
     dispatchFunction(e.target.value);
   }
-  const handlePress = (e: any) => {
+  const handlePress = (e: any) => { // keyCode 13 - "Enter"
     if (isOneRow && e.keyCode === 13) e.preventDefault();
-    if (handleEnter && e.keyCode === 13 && !e.shiftKey) handleEnter();
+    if (handleEnter && e.keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
+      handleEnter();
+    }
   }
   const handleUnfocus = () => {
     const newValue = trimString(value); // trimmed

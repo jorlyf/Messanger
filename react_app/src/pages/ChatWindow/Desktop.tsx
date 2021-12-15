@@ -29,6 +29,7 @@ const Desktop = () => {
 
   const handleSendMessage = () => {
     if (INPUT_MESSAGE.length > 512) return; // 512
+    if (INPUT_MESSAGE.length < 1) return;
     if (CHAT_HUB._connectionState !== "Connected") {
       console.error("Соединение с chathub не установлено");
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение с chathub не установлено") });
@@ -57,6 +58,7 @@ const Desktop = () => {
           <InputField
             value={INPUT_MESSAGE}
             dispatchFunction={dispatchInputMessage}
+            handleEnter={handleSendMessage}
             placeholder={"Напишите сообщение"}
           />
 

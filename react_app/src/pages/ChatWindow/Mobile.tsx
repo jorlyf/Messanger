@@ -1,4 +1,5 @@
-const Mobile = () => {
+import { IProps } from "./index";
+const Mobile = ({ data, handlers }: IProps) => {
     return (
         <></>
     )

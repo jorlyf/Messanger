@@ -15,7 +15,7 @@ const useChatHub = () => {
 
     React.useEffect((): any => {
         const chatHub = new HubConnectionBuilder()
-            .withUrl("https://localhost:7115/chathub")
+            .withUrl("https://localhost:5001/chathub")
             .withAutomaticReconnect()
             .build();
 

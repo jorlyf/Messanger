@@ -13,6 +13,8 @@ import InputField from "../../components/InputField";
 import styles from "./ChatWindowDesktop.module.scss";
 import MembersInfo from "../../components/MembersInfo";
 
+// принимает inputMessage, MembersList как пропсы TODO
+// а так же принимает обработчики в пропсах
 const Desktop = () => {
   const dispatch = useDispatch();
 

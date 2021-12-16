@@ -28,7 +28,6 @@ interface IHandlers {
   handleSendMessage: () => void;
   dispatchInputMessage: (text: string) => void;
 }
-
 export interface IProps {
   data: IData;
   handlers: IHandlers;

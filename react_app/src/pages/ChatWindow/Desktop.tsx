@@ -2,10 +2,10 @@ import MessagesList from "../../components/MessagesList";
 import InputField from "../../components/InputField";
 import MembersInfo from "../../components/MembersInfo";
 
-import styles from "./ChatWindowDesktop.module.scss";
+import styles from "./Desktop.module.scss";
 
-import { IProps } from "./index";
-const Desktop = ({ data, handlers }: IProps) => {
+import { IChatWindowProps } from "./index";
+const Desktop = ({ data, handlers }: IChatWindowProps) => {
   return (
     <div className={styles.Main}>
       <div className={styles.Chat}>

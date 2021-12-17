@@ -7,8 +7,8 @@ import styles from "./App.module.scss";
 const App = () => {
   return (
     <div className={styles.Main}>
-      <ChatWindow />
       <ChangePlatformButton />
+      <ChatWindow />
       <ModalNotifications />
     </div>
   );

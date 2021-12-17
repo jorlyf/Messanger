@@ -28,7 +28,7 @@ interface IHandlers {
   handleSendMessage: () => void;
   dispatchInputMessage: (text: string) => void;
 }
-export interface IProps {
+export interface IChatWindowProps {
   data: IData;
   handlers: IHandlers;
 }

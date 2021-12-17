@@ -1,11 +1,10 @@
 .main {
     position: fixed;
-    right: 0px;
     width: 30px;
     height: 30px;
     background-color: red;
+    z-index: 100;
 }
 .main:hover {
     background-color: lightpink;
-    border: 1px solid seagreen;
 }

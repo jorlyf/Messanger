@@ -1,7 +1,6 @@
 .main {
-    width    : 25%;
     height   : auto;
-    min-width: 600px;
+    min-width: max-content;
   
     position : absolute;
     top      : 50%;
@@ -19,7 +18,7 @@
     input {
         margin: auto;
         border: 1px solid black;
-        font-size: 24px;
+        font-size: 20px;
         display: block;
         text-align: center;
     }

@@ -15,15 +15,18 @@ const useChatHub = () => {
 
     React.useEffect((): any => {
         const chatHub = new HubConnectionBuilder()
-            .withUrl("https://localhost:5001/chathub")
+            .withUrl("https://localhost:7115/chathub")
             .withAutomaticReconnect()
             .build();
 
         // handle events
+        chatHub.onreconnected(() => {
+            dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Успешное переподключение") });
+        });
         chatHub.on("ReceiveMessage", (stringMessage: string) => {
             const jsonMessage = JSON.parse(stringMessage);
             const isDown: boolean = isScrolledDown("messages-list");
-            
+
             dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) });
             if (isDown) scrollDown("messages-list");
         });
@@ -42,6 +45,7 @@ const useChatHub = () => {
 
         chatHub.onclose(() => {
             dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение было закрыто") });
+
         })
 
         // connect

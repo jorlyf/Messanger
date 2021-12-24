@@ -9,8 +9,6 @@ namespace ServerSide.Models
 		public delegate Task Update(); 
 		public event Update OnUsersUpdate;
 		public uint NextMessageId { get; set; } = 1;
-
-
 		public Message CreateMessage(User user, string text) => new Message(NextMessageId++, user.Username, text);
 
 		public MembersInfo CreateMembersInfo()

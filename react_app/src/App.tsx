@@ -1,16 +1,20 @@
+import useDetectMobile from "./hooks/useDetectMobile";
 import ChatWindow from "./pages/ChatWindow";
 import ModalNotifications from "./components/ModalNotifications";
-import ChangePlatformButton from "./components/ChangePlatformButton";
+import Header from "./components/Header";
 
 import styles from "./App.module.scss";
-import useDetectMobile from "./hooks/useDetectMobile";
 
 const App = () => {
   useDetectMobile();
   return (
-    <div className={styles.Main}>
-      <ChangePlatformButton />
-      <ChatWindow />
+    <div className={styles.main}>
+      <Header />
+
+      <div className={styles.content}>
+        <ChatWindow />
+      </div>
+
       <ModalNotifications />
     </div>
   );

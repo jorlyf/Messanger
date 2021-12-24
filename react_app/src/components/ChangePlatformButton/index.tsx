@@ -11,9 +11,10 @@ const ChangePlatformButton = () => {
     const handleClick = () => {
         dispatch({ type: AppActionTypes.SET_IS_MOBILE, payload: !IS_MOBILE });
     }
+    const getPicture = () => IS_MOBILE ? "/pics/mobile.png" : "/pics/pc.png";
 
     return (
-        <button onClick={handleClick} className={styles.main} />
+        <img src={getPicture()} width={10} alt="" onClick={handleClick} className={styles.main} />
     )
 }
 

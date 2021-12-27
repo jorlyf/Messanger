@@ -9,39 +9,32 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("ClientPermission", policy =>
+	options.AddDefaultPolicy(policy =>
 	{
-		policy.AllowAnyHeader()
+		policy.WithOrigins("http://192.168.1.10:3000")
+			.AllowAnyHeader()
 			.AllowAnyMethod()
-			.WithOrigins("http://localhost:3000")
 			.AllowCredentials();
 	});
 });
 
 builder.Services.AddSingleton<ChatManager>();
+WebApplication app = builder.Build();
 
-var app = builder.Build();
-
-//Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseCors("ClientPermission");
-
+//app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseCors();
 
 //app.UseAuthorization();
-
 app.UseEndpoints(endpoints =>
 {
 	endpoints.MapHub<ChatHub>("/chathub");
 });
 app.MapControllers();
-
 app.Run();

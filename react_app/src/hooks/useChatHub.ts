@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { HubConnectionBuilder } from "@microsoft/signalr";
+import { HubConnectionBuilder, HttpTransportType } from "@microsoft/signalr";
 
 import { AppActionTypes } from "../redux/types/App";
 import { ChatActionTypes } from "../redux/types/Chat";
@@ -15,7 +15,11 @@ const useChatHub = () => {
 
     React.useEffect((): any => {
         const chatHub = new HubConnectionBuilder()
-            .withUrl("https://192.168.1.10:7115/chathub")
+            .withUrl("https://localhost:44338/chathub", {
+                
+                skipNegotiation: true,
+                transport: HttpTransportType.WebSockets
+            })
             .withAutomaticReconnect()
             .build();
 

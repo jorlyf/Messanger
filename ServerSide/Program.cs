@@ -1,7 +1,8 @@
 using ServerSide.Hubs;
 using ServerSide.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("https://localhost:7115");
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -11,7 +12,7 @@ builder.Services.AddCors(options =>
 {
 	options.AddDefaultPolicy(policy =>
 	{
-		policy.WithOrigins("http://192.168.1.10:3000")
+		policy.WithOrigins("http://localhost", "https://localhost")
 			.AllowAnyHeader()
 			.AllowAnyMethod()
 			.AllowCredentials();
@@ -27,7 +28,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors();
 

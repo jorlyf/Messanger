@@ -15,7 +15,7 @@ const useChatHub = () => {
 
     React.useEffect((): any => {
         const chatHub = new HubConnectionBuilder()
-            .withUrl("https://localhost:44338/chathub", {
+            .withUrl("http://localhost/api/chathub", {
                 
                 skipNegotiation: true,
                 transport: HttpTransportType.WebSockets

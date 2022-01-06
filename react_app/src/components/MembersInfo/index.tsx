@@ -1,9 +1,11 @@
+import useTypedSelector from "../../hooks/useTypedSelector";
 import styles from "./MembrersInfo.module.scss";
 
-const MembersInfo = ({ membersList = { Usernames: [], Date: "" } }: { membersList: { Usernames: string[], Date: string } }) => {
+const MembersInfo = () => {
+	const MEMBERS_INFO = useTypedSelector(state => state.chat.MEMBERS_LIST);
 	return (
 		<ul className={styles.list}>
-			{membersList.Usernames.map(u =>
+			{MEMBERS_INFO.Usernames.map(u =>
 				<li key={u}>
 					<div className={styles.onlineIcon} />
 					{u}

@@ -10,7 +10,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
-	options.AddDefaultPolicy(policy =>
+	options.AddPolicy("Dev", policy =>
+	{
+		policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
+			.AllowAnyHeader()
+			.AllowAnyMethod()
+			.AllowCredentials();
+	});
+	options.AddPolicy("Prod", policy =>
 	{
 		policy.WithOrigins("http://localhost", "https://localhost")
 			.AllowAnyHeader()
@@ -18,7 +25,6 @@ builder.Services.AddCors(options =>
 			.AllowCredentials();
 	});
 });
-
 builder.Services.AddSingleton<ChatManager>();
 WebApplication app = builder.Build();
 
@@ -30,12 +36,12 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors();
+app.UseCors("Dev");
 
 //app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-	endpoints.MapHub<ChatHub>("/chathub");
+	endpoints.MapHub<ChatHub>("/api/chathub");
 });
 app.MapControllers();
 app.Run();

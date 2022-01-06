@@ -1,0 +1,15 @@
+.pic {
+    transform: rotate(90deg);
+    cursor   : pointer;
+}
+
+.content {
+    position: absolute;
+
+    top  : 35px;
+    right: 5px;
+
+    background-color: rgba(0, 0, 0, 0.1);
+    border          : 1px solid rgba(0, 0, 0, 0.2);
+    border-radius   : 5px;
+}

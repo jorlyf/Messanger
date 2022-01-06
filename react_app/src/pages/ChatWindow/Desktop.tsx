@@ -27,7 +27,7 @@ const Desktop = ({ data, handlers }: IChatWindowProps) => {
       </div>
 
       <div className={styles.MembersInfo}>
-        <MembersInfo membersList={data.MEMBERS_LIST} />
+        <MembersInfo />
       </div>
 
     </div>

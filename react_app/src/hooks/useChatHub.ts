@@ -15,6 +15,7 @@ const useChatHub = () => {
 
     React.useEffect((): any => {
         const chatHub = new HubConnectionBuilder()
+            // http был изначально
             .withUrl("http://localhost/api/chathub", {
                 
                 skipNegotiation: true,

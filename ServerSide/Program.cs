@@ -36,7 +36,7 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors("Dev");
+app.UseCors("Prod");
 
 //app.UseAuthorization();
 app.UseEndpoints(endpoints =>

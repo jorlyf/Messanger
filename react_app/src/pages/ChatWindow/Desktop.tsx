@@ -7,13 +7,13 @@ import styles from "./Desktop.module.scss";
 import { IChatWindowProps } from "./index";
 const Desktop = ({ data, handlers }: IChatWindowProps) => {
   return (
-    <div className={styles.Main}>
-      <div className={styles.Chat}>
-        <div className={styles.Messages} id={"messages-list"} >
+    <div className={styles.main}>
+      <div className={styles.chat}>
+        <div className={styles.messages} id={"messages-list"} >
           <MessagesList messages={data.MESSAGES} />
         </div>
 
-        <div className={styles.Send}>
+        <div className={styles.input}>
           <InputField
             value={data.INPUT_MESSAGE}
             dispatchFunction={handlers.dispatchInputMessage}
@@ -21,7 +21,7 @@ const Desktop = ({ data, handlers }: IChatWindowProps) => {
             placeholder={"Напишите сообщение"}
           />
 
-          <button onClick={handlers.handleSendMessage}></button>
+          <img className={styles.submit} alt="" src="pics/send.png" onClick={handlers.handleSendMessage} />
         </div>
 
       </div>

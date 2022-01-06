@@ -1,4 +1,4 @@
-.Main {
+.main {
   display              : grid;
   grid-template-columns: 5fr 2fr;
 
@@ -17,7 +17,7 @@
   border          : 1px solid rgba(0, 0, 0, 0.25);
   box-shadow      : 2px 5px 5px rgba(0, 0, 0, 0.05);
 
-  .Chat {
+  .chat {
     grid-column   : 1;
     overflow      : hidden;
     display       : flex;
@@ -25,7 +25,7 @@
 
     background-color: white;
 
-    .Messages {
+    .messages {
       overflow : auto;
       flex-grow: 1;
       padding  : 10px;
@@ -38,7 +38,7 @@
       box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.025);
     }
 
-    .Send {
+    .input {
       flex-grow            : 0;
       display              : grid;
       grid-template-columns: 16fr 1fr;
@@ -54,6 +54,10 @@
 
         font-size  : 16px;
         font-family: inherit;
+      }
+
+      .submit {
+        height: 24px;
       }
     }
   }

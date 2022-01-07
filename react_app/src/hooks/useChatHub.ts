@@ -15,9 +15,8 @@ const useChatHub = () => {
 
     React.useEffect((): any => {
         const chatHub = new HubConnectionBuilder()
-            // http && localhost are working
+            // http && ip are working
             .withUrl("http://192.168.1.10/api/chathub", {
-                
                 skipNegotiation: true,
                 transport: HttpTransportType.WebSockets
             })

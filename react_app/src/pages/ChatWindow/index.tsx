@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import useTypedSelector from "../../hooks/useTypedSelector";
 import useChatHub from "../../hooks/useChatHub";
+import { scrollDown } from "../../utils";
 
 import { AppActionTypes } from "../../redux/types/App";
 import { ChatActionTypes } from "../../redux/types/Chat";
@@ -60,8 +61,9 @@ const ChatWindow = () => {
       try {
         data.CHAT_HUB.invoke("SendMessage", data.INPUT_MESSAGE);
         const currentTime = new Date().toLocaleTimeString('ru', { hour12: false, hour: "numeric", minute: "numeric" });
-        dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(data.NEXT_MESSAGE_ID, data.USERNAME, data.INPUT_MESSAGE, currentTime, true) });
         dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: "" }); // clear input
+        dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(data.NEXT_MESSAGE_ID, data.USERNAME, data.INPUT_MESSAGE, currentTime, true) });
+        scrollDown("messages-list");
       } catch (error: any) {
         dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
         console.error(error.message);
@@ -70,7 +72,7 @@ const ChatWindow = () => {
     dispatchInputMessage: (text: string) => dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: text })
   };
 
-  useChatHub();
+  useChatHub(); // connection to backend (signalR)
 
   return (
     <>

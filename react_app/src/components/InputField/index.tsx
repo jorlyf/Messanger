@@ -1,8 +1,6 @@
 import TextareaAutosize from 'react-textarea-autosize';
 import { trimString } from '../../utils';
 
-import styles from "./InputField.module.scss";
-
 interface IInputField {
   value: string;
   dispatchFunction: (value: string) => void;
@@ -36,7 +34,6 @@ const InputField = ({ value, dispatchFunction, placeholder, handleEnter, minRows
       onBlur={handleUnfocus}
       value={value}
       placeholder={placeholder}
-      className={styles.main}
 
       minRows={minRows}
       maxRows={maxRows}

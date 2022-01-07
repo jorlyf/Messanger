@@ -63,7 +63,12 @@ const ChatWindow = () => {
         const currentTime = new Date().toLocaleTimeString('ru', { hour12: false, hour: "numeric", minute: "numeric" });
         dispatch({ type: ChatActionTypes.SET_INPUT_MESSAGE, payload: "" }); // clear input
         dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(data.NEXT_MESSAGE_ID, data.USERNAME, data.INPUT_MESSAGE, currentTime, true) });
-        scrollDown("messages-list");
+
+        setTimeout(() => {
+          scrollDown("messages-list");
+        }, 10); // самый лучший костыль, что я делала
+
+
       } catch (error: any) {
         dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(error.message) });
         console.error(error.message);

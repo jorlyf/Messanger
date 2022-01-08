@@ -66,7 +66,7 @@ const ChatWindow = () => {
 
         setTimeout(() => {
           scrollDown("messages-list");
-        }, 10); // самый лучший костыль, что я делала
+        }, 10); // самый лучший костыль, что я делал
 
 
       } catch (error: any) {

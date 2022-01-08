@@ -32,7 +32,9 @@ const useChatHub = () => {
             const isDown: boolean = isScrolledDown("messages-list");
 
             dispatch({ type: ChatActionTypes.ADD_MESSAGE, payload: new Message(jsonMessage.Id, jsonMessage.Username, jsonMessage.Text, jsonMessage.Time, false) });
-            if (isDown) scrollDown("messages-list");
+            if (isDown) setTimeout(() => {
+                scrollDown("messages-list");
+            }, 10); // самый лучший костыль, что я делал
         });
         chatHub.on("ReceiveRegistrationAnswer", (status: string) => {
             if (status === "ok")
@@ -62,7 +64,7 @@ const useChatHub = () => {
 
         // onUnmount
         return () => {
-            dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: undefined });
+            dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: null });
         }
 
     }, [dispatch]);

@@ -2,7 +2,6 @@
   "name": "react_app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:7115",
   "dependencies": {
     "@microsoft/signalr": "^6.0.0",
     "@testing-library/jest-dom": "^5.15.0",

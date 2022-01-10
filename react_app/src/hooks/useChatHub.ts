@@ -16,7 +16,8 @@ const useChatHub = () => {
     React.useEffect((): any => {
         const chatHub = new HubConnectionBuilder()
             // http && ip are working
-            .withUrl("http://192.168.1.10/api/chathub", {
+            // "http://192.168.1.10/api/chathub"
+            .withUrl("/api/chathub", {
                 skipNegotiation: true,
                 transport: HttpTransportType.WebSockets
             })
@@ -51,8 +52,7 @@ const useChatHub = () => {
 
         chatHub.onclose(() => {
             dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Соединение было закрыто") });
-
-        })
+        });
 
         // connect
         chatHub.start().catch(error => {
@@ -65,7 +65,7 @@ const useChatHub = () => {
         // onUnmount
         return () => {
             dispatch({ type: ChatActionTypes.SET_CHAT_HUB, payload: null });
-        }
+        };
 
     }, [dispatch]);
 }

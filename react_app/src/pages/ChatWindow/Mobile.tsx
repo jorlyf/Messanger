@@ -17,6 +17,7 @@ const Mobile = ({ data, handlers }: IChatWindowProps) => {
                     dispatchFunction={handlers.dispatchInputMessage}
                     handleEnter={handlers.handleSendMessage}
                     placeholder={"Напишите сообщение"}
+                    isOneRow={true}
                 />
                 <img className={styles.submit} alt="" src="pics/send.png" onClick={handlers.handleSendMessage} />
             </div>

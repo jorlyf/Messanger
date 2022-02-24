@@ -1,5 +1,5 @@
 using ServerSide.Hubs;
-using ServerSide.Models;
+using ServerSide.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("https://localhost:7115");
@@ -25,7 +25,11 @@ builder.Services.AddCors(options =>
 			.AllowCredentials();
 	});
 });
+/// <summary>
+/// service registration
+/// </summary>
 builder.Services.AddSingleton<ChatManager>();
+
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -36,7 +40,8 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors("Prod");
+//app.UseCors("Prod");
+app.UseCors("Dev");
 
 //app.UseAuthorization();
 app.UseEndpoints(endpoints =>

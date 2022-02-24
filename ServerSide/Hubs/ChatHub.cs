@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using ServerSide.Models;
+using ServerSide.Services;
 using ServerSide.Utils;
 
 namespace ServerSide.Hubs
@@ -9,8 +10,13 @@ namespace ServerSide.Hubs
 		private readonly ChatManager ChatManager;
 		public ChatHub(ChatManager chatManager)
 		{
-			ChatManager = chatManager;
-			ChatManager.OnUsersUpdate += this.SendMembersInfo;
+			this.ChatManager = chatManager;
+			this.ChatManager.OnUsersUpdate += this.SendMembersInfo;
+		}
+		protected override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			this.ChatManager.OnUsersUpdate -= this.SendMembersInfo;
 		}
 
 		public async Task SendMessage(string messageText)
@@ -33,8 +39,10 @@ namespace ServerSide.Hubs
 			else
 				await this.Clients.Caller.SendAsync("ReceiveRegistrationAnswer", "error");
 		}
-		public async Task SendMembersInfo()
+		private async Task SendMembersInfo()
 		{
+			Console.WriteLine($"SendMembersInfo {DateTime.Now.Ticks}");
+
 			MembersInfo membersInfo = ChatManager.CreateMembersInfo();
 			string jsonMembersInfo = JsonHelper.Serialize(membersInfo);
 			await this.Clients.All.SendAsync("ReceiveMembersInfo", jsonMembersInfo);

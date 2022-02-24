@@ -38,8 +38,9 @@ const Auth = () => {
       const registration: UserRegistration = new UserRegistration(USERNAME);
       CHAT_HUB.invoke("Registrate", JSON.stringify(registration));
     } catch (error: any) {
-      dispatch({ type: AppActionTypes.SET_AUTH_IS_PENDING, payload: false });
       console.error(error.message);
+    } finally {
+      dispatch({ type: AppActionTypes.SET_AUTH_IS_PENDING, payload: false });
     }
   }
 

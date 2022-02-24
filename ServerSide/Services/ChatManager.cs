@@ -1,16 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using ServerSide.Models;
 
-namespace ServerSide.Models
+namespace ServerSide.Services
 {
 	internal class ChatManager
 	{
-		public SynchronizedCollection<User> Users { get; } = new SynchronizedCollection<User>();
-
-		public delegate Task Update(); 
+		public readonly SynchronizedCollection<User> Users;
+		public delegate Task Update();
 		public event Update OnUsersUpdate;
+
+		public ChatManager()
+		{
+			this.Users = new SynchronizedCollection<User>();
+		}
+
 		public uint NextMessageId { get; set; } = 1;
 		public Message CreateMessage(User user, string text) => new Message(NextMessageId++, user.Username, text);
-
 		public MembersInfo CreateMembersInfo()
 		{
 			List<string> authorizedUsers = new List<string>(Users.Where(u => u.IsRegistrated).Select(u => u.Username));
@@ -23,7 +27,6 @@ namespace ServerSide.Models
 			if (Users.FirstOrDefault(user => user.ConnectionId == connectionId) != null) return false;
 
 			Users.Add(new User(connectionId));
-			OnUsersUpdate();
 			return true;
 		}
 		public void DisconnectUser(string connectionId)
@@ -31,10 +34,9 @@ namespace ServerSide.Models
 			User? user = Users.FirstOrDefault(user => user.ConnectionId == connectionId);
 			if (user == null) return;
 
-			Users.Remove(user);
-			OnUsersUpdate();
+			this.Users.Remove(user);
+			this.OnUsersUpdate();
 		}
-
 		public bool RegistrateUser(string connectionId, UserRegistration registration)
 		{
 			User? user = Users.FirstOrDefault(user => user.ConnectionId == connectionId);
@@ -44,7 +46,7 @@ namespace ServerSide.Models
 			if (Users.FirstOrDefault(user => user.Username.ToLower() == registration.Username.ToLower()) != null) return false;
 
 			user.Registrate(registration);
-			OnUsersUpdate();
+			this.OnUsersUpdate();
 			return true;
 		}
 

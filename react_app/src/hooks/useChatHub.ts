@@ -17,6 +17,10 @@ const useChatHub = () => {
         const chatHub = new HubConnectionBuilder()
             // http && ip are working
             // "http://192.168.1.10/api/chathub"
+            // .withUrl("https://localhost:7115/api/chathub", {
+            //     skipNegotiation: true,
+            //     transport: HttpTransportType.WebSockets
+            // })
             .withUrl("/api/chathub", {
                 skipNegotiation: true,
                 transport: HttpTransportType.WebSockets
@@ -48,6 +52,7 @@ const useChatHub = () => {
         chatHub.on("ReceiveMembersInfo", (stringMembersInfo: string) => {
             const jsonMembersInfo = JSON.parse(stringMembersInfo);
             dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonMembersInfo });
+            console.log(jsonMembersInfo);
         });
 
         chatHub.onclose(() => {

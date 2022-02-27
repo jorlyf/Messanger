@@ -2,11 +2,10 @@ using ServerSide.Hubs;
 using ServerSide.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("https://localhost:7115");
+//builder.WebHost.UseUrls("https://localhost:7115");
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
@@ -25,23 +24,28 @@ builder.Services.AddCors(options =>
 			.AllowCredentials();
 	});
 });
-/// <summary>
-/// service registration
-/// </summary>
+
+// full debug logging
+builder.Logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);
+
+#region Service registration
 builder.Services.AddSingleton<ChatManager>();
+#endregion
 
 WebApplication app = builder.Build();
 
+Console.WriteLine($"IsDevelopment - {app.Environment.IsDevelopment()}");
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+	app.UseCors("Dev");
+}
+else
+{
+	app.UseCors("Prod");
 }
 
 //app.UseHttpsRedirection();
 app.UseRouting();
-app.UseCors("Prod");
-//app.UseCors("Dev");
 
 //app.UseAuthorization();
 app.UseEndpoints(endpoints =>

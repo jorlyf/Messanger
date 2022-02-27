@@ -43,7 +43,7 @@ namespace ServerSide.Services
 			if (user == null) return false;
 			if (user.IsRegistrated) return false;
 
-			if (Users.FirstOrDefault(user => user.Username.ToLower() == registration.Username.ToLower()) != null) return false;
+			if (Users.Any(user => user.Username.ToLower() == registration.Username.ToLower())) return false;
 
 			user.Registrate(registration);
 			this.OnUsersUpdate();

@@ -7,16 +7,16 @@ namespace ServerSide.Models
 		public string ConnectionId { get; }
 		public string Username { get; private set; } = "Anon";
 		public bool IsRegistrated { get; private set; } = false;
-		public DateTime ConnectedTime { get; } = TimeService.FullDate;
+		public DateTime ConnectedTime { get; } = TimeUtils.FullDate;
 		public User(string connectionId)
 		{
-			ConnectionId = connectionId;
+			this.ConnectionId = connectionId;
 		}
 
 		public void Registrate(UserRegistration registration)
 		{
-			Username = registration.Username;
-			IsRegistrated = true;
+			this.Username = registration.Username;
+			this.IsRegistrated = true;
 		}
 	}
 }

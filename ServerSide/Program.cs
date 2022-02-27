@@ -2,7 +2,13 @@ using ServerSide.Hubs;
 using ServerSide.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-//builder.WebHost.UseUrls("https://localhost:7115");
+builder.WebHost.UseUrls("https://localhost:7115");
+
+//builder.WebHost.UseKestrel();
+//builder.WebHost.ConfigureKestrel(config =>
+//{
+//	config.ListenLocalhost(7115);
+//});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

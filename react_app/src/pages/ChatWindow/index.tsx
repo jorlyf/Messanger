@@ -50,7 +50,10 @@ const ChatWindow = () => {
   };
   const handlers: IHandlers = {
     handleSendMessage: () => {
-      if (data.INPUT_MESSAGE.length > 512) return; // 512
+      if (data.INPUT_MESSAGE.length > 512) {
+        dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком длинное сообщение! >512 символов") });
+        return;
+      }
       if (data.INPUT_MESSAGE.length < 1) return;
       if (data.CHAT_HUB._connectionState !== "Connected") {
         console.error("Соединение с chathub не установлено");

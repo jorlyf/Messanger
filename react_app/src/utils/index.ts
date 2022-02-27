@@ -9,12 +9,12 @@ export const getElement = (elementName: string) => {
   }
   return element;
 }
-export const scrollDown = (elementName: string) => {
+export const scrollDown = (elementName: string): void => {
   const element: HTMLElement | null = getElement(elementName);
   if (!element) return;
   element.scrollTop = element.scrollHeight;
 }
-export const isScrolledDown = (elementName: string) => {
+export const isScrolledDown = (elementName: string): boolean => {
   const element: HTMLElement | null = getElement(elementName);
   if (!element) return false;
   return element.scrollTop >= (element.scrollHeight - element.offsetHeight);

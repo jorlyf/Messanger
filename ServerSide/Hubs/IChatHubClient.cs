@@ -1,6 +1,6 @@
 ﻿namespace ServerSide.Hubs
 {
-	public interface IChatHub
+	public interface IChatHubClient
 	{
 		public Task ReceiveMessage(string message);
 		public Task ReceiveRegistrationAnswer(string message);

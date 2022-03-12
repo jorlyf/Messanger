@@ -5,7 +5,7 @@ using ServerSide.Utils;
 
 namespace ServerSide.Hubs
 {
-	internal class ChatHub : Hub<IChatHub>
+	internal class ChatHub : Hub<IChatHubClient>
 	{
 		private readonly ChatManager ChatManager;
 		public ChatHub(ChatManager chatManager)
@@ -15,8 +15,8 @@ namespace ServerSide.Hubs
 		}
 		protected override void Dispose(bool disposing)
 		{
-			base.Dispose(disposing);
 			this.ChatManager.OnUsersUpdate -= this.SendMembersInfo;
+			base.Dispose(disposing);
 		}
 
 		public async Task SendMessage(string messageText)
@@ -27,7 +27,6 @@ namespace ServerSide.Hubs
 
 			Message message = ChatManager.CreateMessage(user, messageText);
 			string jsonMessage = JsonHelper.Serialize(message);
-			//await this.Clients.Others.SendAsync("ReceiveMessage", jsonMessage);
 			await this.Clients.Others.ReceiveMessage(jsonMessage);
 		}
 		public async Task Registrate(string data)
@@ -36,17 +35,14 @@ namespace ServerSide.Hubs
 			if (registration == null) return;
 
 			if (ChatManager.RegistrateUser(Context.ConnectionId, registration))
-				//await this.Clients.Caller.SendAsync("ReceiveRegistrationAnswer", "ok");
 				await this.Clients.Caller.ReceiveRegistrationAnswer("ok");
 			else
-				//await this.Clients.Caller.SendAsync("ReceiveRegistrationAnswer", "error");
 				await this.Clients.Caller.ReceiveRegistrationAnswer("error");
 		}
 		private async Task SendMembersInfo()
 		{
 			MembersInfo onlineUsers = ChatManager.CreateMembersInfo();
 			string jsonOnlineUsers = JsonHelper.Serialize(onlineUsers);
-			//await this.Clients.All.SendAsync("ReceiveOnlineUsers", jsonOnlineUsers);
 			await this.Clients.All.ReceiveOnlineMembersList(jsonOnlineUsers);
 		}
 		#region Connect and Disconnect

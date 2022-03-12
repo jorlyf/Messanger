@@ -4,7 +4,7 @@ namespace ServerSide.Services
 {
 	internal class ChatManager
 	{
-		public readonly SynchronizedCollection<User> Users;
+		private readonly SynchronizedCollection<User> Users;
 		public delegate Task Update();
 		public event Update OnUsersUpdate;
 

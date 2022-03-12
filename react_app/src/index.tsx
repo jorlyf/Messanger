@@ -9,9 +9,7 @@ import { RootReducer } from "./redux/Root";
 import App from "./App";
 import "./Main.css";
 
-const store: Store = createStore(RootReducer, composeWithDevTools(
-
-));
+const store: Store = createStore(RootReducer, composeWithDevTools());
 
 ReactDOM.render(
   <Provider store={store}>

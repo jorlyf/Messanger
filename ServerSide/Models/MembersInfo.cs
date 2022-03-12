@@ -4,11 +4,11 @@ namespace ServerSide.Models
 {
 	internal class MembersInfo
 	{
-		public List<string> Usernames { get; }
+		public IEnumerable<string> Usernames { get; }
 		public DateTime Date { get; } = TimeUtils.FullDate;
 		public MembersInfo(IEnumerable<string> usernanemes)
 		{
-			Usernames = (List<string>)usernanemes;
+			Usernames = usernanemes;
 		}
 	}
 }

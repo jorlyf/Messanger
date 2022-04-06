@@ -1,4 +1,5 @@
 import useDetectMobile from "./hooks/useDetectMobile";
+
 import ChatWindow from "./pages/ChatWindow";
 import ModalNotifications from "./components/ModalNotifications";
 import Header from "./components/Header";

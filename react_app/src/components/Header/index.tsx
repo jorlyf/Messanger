@@ -1,7 +1,9 @@
 import useTypedSelector from "../../hooks/useTypedSelector";
+
 import ChangePlatformButton from "../ChangePlatformButton";
 import MembersInfo from "../MembersInfo";
 import Slider from "../Slider";
+
 import styles from "./Header.module.scss";
 
 const Header = () => {

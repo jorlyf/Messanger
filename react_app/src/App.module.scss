@@ -8,7 +8,7 @@
   background-color: rgba(95, 158, 160, 0.15);
 
   .content {
-    grid-row    : 2;
-    max-height: calc(100vh - 30px); // костыль
+    grid-row: 2;
+    overflow: hidden;
   }
 }

@@ -31,9 +31,6 @@ builder.Services.AddCors(options =>
 	});
 });
 
-// full debug logging
-builder.Logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);
-
 #region Service registration
 builder.Services.AddSingleton<ChatManager>();
 #endregion
@@ -44,6 +41,9 @@ Console.WriteLine($"IsDevelopment - {app.Environment.IsDevelopment()}");
 if (app.Environment.IsDevelopment())
 {
 	app.UseCors("Dev");
+
+	// full debug logging
+	builder.Logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);
 }
 else
 {

@@ -4,55 +4,71 @@ namespace ServerSide.Services
 {
 	internal class ChatManager
 	{
-		private readonly SynchronizedCollection<User> Users;
+		private readonly SynchronizedCollection<User> AnonimUsers;
+		private readonly SynchronizedCollection<User> AuthorizedUsers;
 		public delegate Task Update();
-		public event Update OnUsersUpdate;
+		public event Update? OnUsersUpdate;
 
 		public ChatManager()
 		{
-			this.Users = new SynchronizedCollection<User>();
+			this.AnonimUsers = new SynchronizedCollection<User>();
+			this.AuthorizedUsers = new SynchronizedCollection<User>();
 		}
 
 		public uint NextMessageId { get; set; } = 1;
 		public Message CreateMessage(User user, string text) => new Message(NextMessageId++, user.Username, text);
 		public MembersInfo CreateMembersInfo()
 		{
-			List<string> authorizedUsers = new List<string>(Users.Where(u => u.IsRegistrated).Select(u => u.Username));
+			List<string> authorizedUsers = new List<string>(this.AuthorizedUsers.Select(u => u.Username));
 			return new MembersInfo(authorizedUsers);
 		}
 
-		public bool ConnectUser(string connectionId)
+		public User? ConnectUser(string connectionId)
 		{
-			if (string.IsNullOrEmpty(connectionId)) return false;
-			if (Users.FirstOrDefault(user => user.ConnectionId == connectionId) != null) return false;
+			if (string.IsNullOrEmpty(connectionId)) return null;
+			if (GetUserByConnectionID(connectionId) is not null) return null;
 
-			Users.Add(new User(connectionId));
-			return true;
+			User user = new User(connectionId);
+			this.AnonimUsers.Add(user);
+			return user;
 		}
-		public void DisconnectUser(string connectionId)
+		public User? DisconnectUser(string connectionId)
 		{
-			User? user = Users.FirstOrDefault(user => user.ConnectionId == connectionId);
-			if (user == null) return;
+			User? user = GetUserByConnectionID(connectionId);
+			if (user is null) return null;
 
-			this.Users.Remove(user);
-			this.OnUsersUpdate();
+			this.AnonimUsers.Remove(user);
+			this.AuthorizedUsers.Remove(user);
+
+			this.OnUsersUpdate?.Invoke();
+			return user;
 		}
 		public bool RegistrateUser(string connectionId, UserRegistration registration)
 		{
-			User? user = Users.FirstOrDefault(user => user.ConnectionId == connectionId);
-			if (user == null) return false;
+			User? user = GetUserByConnectionID(connectionId);
+			if (user is null) return false;
 			if (user.IsRegistrated) return false;
 
-			if (Users.Any(user => user.Username.ToLower() == registration.Username.ToLower())) return false;
+			if (this.AuthorizedUsers.Any(user => user.Username.ToLower() == registration.Username.ToLower())) return false;
 
 			user.Registrate(registration);
-			this.OnUsersUpdate();
+
+			this.AuthorizedUsers.Add(user);
+			this.AnonimUsers.Remove(user);
+
+			this.OnUsersUpdate?.Invoke();
 			return true;
 		}
 
 		public User? GetUserByConnectionID(string connectionId)
 		{
-			return Users.FirstOrDefault(user => user.ConnectionId == connectionId);
+			User? authorizedUser = this.AuthorizedUsers.FirstOrDefault(user => user.ConnectionId == connectionId);
+			if (authorizedUser is not null) return authorizedUser;
+
+			User? anonimUser = this.AnonimUsers.FirstOrDefault(user => user.ConnectionId == connectionId);
+			if (anonimUser is not null) return anonimUser;
+
+			return null;
 		}
 	}
 }

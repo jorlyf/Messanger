@@ -21,6 +21,9 @@ const Mobile = ({ data, handlers }: IChatWindowProps) => {
                 />
                 <img className={styles.submit} alt="" src="pics/send.png" onClick={handlers.handleSendMessage} />
             </div>
+
+            <div className={styles.downBorder} />
+            
         </div>
     )
 }

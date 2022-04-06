@@ -18,25 +18,25 @@ const buildConnection = (config: IConfiguration): HubConnection => {
     if (config.isDevelopment)
     {
         return new HubConnectionBuilder()
-        .withUrl("https://localhost:7115/api/chathub", { // debug
-            skipNegotiation: true,
-            transport: HttpTransportType.WebSockets
-        })
-        .withAutomaticReconnect()
-        .build();
+            .withUrl("https://localhost:7115/api/chathub", { // debug
+                skipNegotiation: true,
+                transport: HttpTransportType.WebSockets
+            })
+            .withAutomaticReconnect()
+            .build();
     }
     else {
         return new HubConnectionBuilder()
-        .withUrl("/api/chathub", { // prod
-            skipNegotiation: true,
-            transport: HttpTransportType.WebSockets
-        })
-        .withAutomaticReconnect()
-        .build();
+            .withUrl("/api/chathub", {
+                skipNegotiation: true,
+                transport: HttpTransportType.WebSockets
+            })
+            .withAutomaticReconnect()
+            .build();
     }
 }
 const configuration: IConfiguration = {
-    isDevelopment: false
+    isDevelopment: true
 }
 
 const useChatHub = () => {

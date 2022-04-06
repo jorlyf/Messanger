@@ -1,14 +1,14 @@
 .main {
     height   : auto;
     min-width: max-content;
-  
+
     position : absolute;
-    top      : 50%;
+    top      : 45%;
     left     : 50%;
     transform: translate(-50%, -50%);
 
     text-align: center;
-  
+
     background-color: white;
     padding         : 12px;
     border-radius   : 8px;
@@ -16,15 +16,24 @@
     box-shadow      : 2px 5px 5px rgba(0, 0, 0, 0.05);
 
     input {
-        margin: auto;
-        border: 1px solid black;
-        font-size: 20px;
-        display: block;
+        margin    : auto;
+        border    : 1px solid black;
+        font-size : 20px;
+        display   : block;
         text-align: center;
     }
+
+    textarea {
+        resize: none;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+
+        font-size : 20px;
+        font-family: inherit;
+    }
+
     button {
-        margin: auto;
+        margin    : auto;
         margin-top: 30px;
-        display: block;
+        display   : block;
     }
 }

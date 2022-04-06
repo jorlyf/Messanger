@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import InputField from "../../components/InputField";
 import useTypedSelector from "../../hooks/useTypedSelector";
 import Notification from "../../models/Notification";
 import UserRegistration from "../../models/UserRegistration";
@@ -17,7 +18,6 @@ const Auth = () => {
   const setUsername = (username: string) => {
     dispatch({ type: AppActionTypes.SET_USERNAME, payload: username });
   }
-
   const submitAuth = () => {
     if (USERNAME.length > 16) {
       dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Слишком длинное имя! Введите не более 16 символов") });
@@ -48,11 +48,13 @@ const Auth = () => {
   return (
     <div className={styles.main}>
       <h3>Введите ваше имя:</h3>
-      <input
+      <InputField
         value={USERNAME}
+        dispatchFunction={setUsername}
+        handleEnter={submitAuth}
         placeholder={"Имя"}
         disabled={AUTH_IS_PENDING}
-        onChange={(e) => setUsername(e.target.value)}
+        isOneRow={true}
       />
       <button onClick={submitAuth} value={"Войти"}>Войти</button>
     </div>

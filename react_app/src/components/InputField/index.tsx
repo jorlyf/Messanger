@@ -8,10 +8,11 @@ interface IInputField {
   handleEnter?: () => void;
   minRows?: number;
   maxRows?: number;
+  disabled?: boolean;
   isOneRow?: boolean;
 }
 
-const InputField = ({ value, dispatchFunction, placeholder, handleEnter, minRows = 1, maxRows = 6, isOneRow = false }: IInputField) => {
+const InputField = ({ value, dispatchFunction, placeholder, handleEnter, minRows = 1, maxRows = 6, disabled=false, isOneRow = false }: IInputField) => {
   const handleChange = (e: any) => {
     dispatchFunction(e.target.value);
   }
@@ -34,6 +35,8 @@ const InputField = ({ value, dispatchFunction, placeholder, handleEnter, minRows
       onBlur={handleUnfocus}
       value={value}
       placeholder={placeholder}
+
+      disabled={disabled}
 
       minRows={minRows}
       maxRows={maxRows}

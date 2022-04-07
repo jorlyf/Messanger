@@ -4,12 +4,6 @@ using ServerSide.Services;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("https://localhost:7115");
 
-//builder.WebHost.UseKestrel();
-//builder.WebHost.ConfigureKestrel(config =>
-//{
-//	config.ListenLocalhost(7115);
-//});
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSignalR();
@@ -35,15 +29,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<ChatManager>();
 #endregion
 
+
 WebApplication app = builder.Build();
 
 Console.WriteLine($"IsDevelopment - {app.Environment.IsDevelopment()}");
 if (app.Environment.IsDevelopment())
 {
 	app.UseCors("Dev");
-
-	// full debug logging
-	builder.Logging.AddFilter("Microsoft.AspNetCore.SignalR", LogLevel.Debug);
 }
 else
 {
@@ -56,6 +48,7 @@ app.UseRouting();
 //app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
+	endpoints.MapControllers();
 	endpoints.MapHub<ChatHub>("/api/chathub");
 });
 app.MapControllers();

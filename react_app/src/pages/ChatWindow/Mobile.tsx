@@ -13,13 +13,13 @@ const Mobile = ({ data, handlers }: IChatWindowProps) => {
 
             <div className={styles.input}>
                 <InputField
-                    value={data.INPUT_MESSAGE}
+                    value={data.INPUT_TEXT_MESSAGE}
                     dispatchFunction={handlers.dispatchInputMessage}
                     handleEnter={handlers.handleSendMessage}
                     placeholder={"Напишите сообщение"}
                     isOneRow={true}
                 />
-                <img className={styles.submit} alt="" src="pics/send.png" onClick={handlers.handleSendMessage} />
+                <img className={styles.sendMessageButton} alt="" src="pics/send.png" onClick={handlers.handleSendMessage} />
             </div>
 
             <div className={styles.downBorder} />

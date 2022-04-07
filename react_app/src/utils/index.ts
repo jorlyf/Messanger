@@ -19,3 +19,12 @@ export const isScrolledDown = (elementName: string): boolean => {
   if (!element) return false;
   return element.scrollTop >= (element.scrollHeight - element.offsetHeight);
 }
+export const createFormData = (files: any[]): FormData => {
+  const formData: FormData = new FormData();
+  
+  for (const file of files) {
+    formData.append('files', file);
+  };
+
+  return formData;
+}

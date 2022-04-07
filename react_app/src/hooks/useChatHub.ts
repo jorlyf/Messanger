@@ -67,7 +67,6 @@ const useChatHub = () => {
         chatHub.on("ReceiveOnlineMembersList", (stringOnlineUsers: string) => {
             const jsonOnlineUsers = JSON.parse(stringOnlineUsers);
             dispatch({ type: ChatActionTypes.SET_MEMBERS_LIST, payload: jsonOnlineUsers });
-            console.log(jsonOnlineUsers);
         });
 
         chatHub.onclose(() => {

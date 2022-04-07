@@ -2,11 +2,12 @@ import { IChatState, IChatAction, ChatActionTypes } from "./types/Chat";
 
 const initialState: IChatState = {
   CHAT_HUB: undefined,
-  INPUT_MESSAGE: "",
+  INPUT_TEXT_MESSAGE: "",
+  ATTACHED_MESSAGE_IMAGES: [],
   MESSAGES: [],
   NEXT_MESSAGE_ID: 1,
   IS_MEMBERS_INFO: true,
-  MEMBERS_LIST: { Usernames: [], Date: ""}
+  MEMBERS_LIST: { Usernames: [], Date: "" }
 }
 
 export const Chat = (state: IChatState = initialState, action: IChatAction): IChatState => {
@@ -14,12 +15,15 @@ export const Chat = (state: IChatState = initialState, action: IChatAction): ICh
     case ChatActionTypes.SET_CHAT_HUB:
       return { ...state, CHAT_HUB: action.payload };
 
-    case ChatActionTypes.SET_INPUT_MESSAGE:
-      return { ...state, INPUT_MESSAGE: action.payload };
+    case ChatActionTypes.SET_INPUT_TEXT_MESSAGE:
+      return { ...state, INPUT_TEXT_MESSAGE: action.payload };
+
+    case ChatActionTypes.SET_ATTACHED_MESSAGE_IMAGES:
+      return { ...state, ATTACHED_MESSAGE_IMAGES: action.payload };
 
     case ChatActionTypes.SET_IS_MEMBERS_INFO:
       return { ...state, IS_MEMBERS_INFO: action.payload };
-    
+
     case ChatActionTypes.SET_MEMBERS_LIST:
       return { ...state, MEMBERS_LIST: action.payload };
 

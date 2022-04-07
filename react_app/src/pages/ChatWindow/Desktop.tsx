@@ -15,19 +15,24 @@ const Desktop = ({ data, handlers }: IChatWindowProps) => {
 
         <div className={styles.input}>
           <InputField
-            value={data.INPUT_MESSAGE}
+            value={data.INPUT_TEXT_MESSAGE}
             dispatchFunction={handlers.dispatchInputMessage}
             handleEnter={handlers.handleSendMessage}
             placeholder={"Напишите сообщение"}
           />
 
-          <img className={styles.submit} alt="" src="pics/send.png" onClick={handlers.handleSendMessage} />
+          <img className={styles.sendMessageButton} alt="" src="pics/send.png" onClick={handlers.handleSendMessage} />
         </div>
 
       </div>
 
       <div className={styles.MembersInfo}>
         <MembersInfo />
+
+        {/* <button className={styles.attachImageButton}
+          onClick={handlers.handleSendImages}
+        /> */}
+
       </div>
 
     </div>

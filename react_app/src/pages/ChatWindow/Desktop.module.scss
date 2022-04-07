@@ -56,7 +56,7 @@
         font-family: inherit;
       }
 
-      .submit {
+      .sendMessageButton {
         height: 24px;
       }
     }
@@ -72,5 +72,12 @@
     border-radius: 6px;
 
     box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.025);
+
+    .attachImageButton {
+      background-color: antiquewhite;
+      height          : 15px;
+      width           : 15px;
+    }
+    
   }
 }

@@ -27,19 +27,26 @@
 
     .input {
         grid-row             : 2;
-
         display              : grid;
         width                : 100%;
-        grid-template-columns: 1fr 24px;
+        grid-template-columns: 24px 1fr 24px;
 
         background-color: white;
 
+        .attachButton {
+            grid-column     : 1;
+            height          : 24px;
+            margin-top      : auto;
+            background-color: white;
+            border-top      : 1px solid rgba(0, 0, 0, 0.15);
+        }
+
         textarea {
-            grid-column : 1;
-            height      : 100%;
+            grid-column : 2;
             resize      : none;
             border      : none;
             border-top  : 1px solid rgba(0, 0, 0, 0.15);
+            border-left : 1px solid rgba(0, 0, 0, 0.15);
             border-right: 1px solid rgba(0, 0, 0, 0.15);
 
             font-size  : 16px;
@@ -47,8 +54,7 @@
         }
 
         .sendMessageButton {
-            grid-column     : 2;
-            height          : 24px;
+            grid-column     : 3;
             height          : 24px;
             margin-top      : auto;
             background-color: white;

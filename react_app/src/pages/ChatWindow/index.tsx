@@ -29,7 +29,7 @@ interface IData {
 interface IHandlers {
   handleSendMessage: () => void;
   dispatchInputMessage: (text: string) => void;
-  handleAttachImages: (images: any) => void;
+  handleAttachFiles: (images: any) => void;
   handleSendImages: () => void;
 }
 export interface IChatWindowProps {
@@ -83,8 +83,8 @@ const ChatWindow = () => {
       }
     },
     dispatchInputMessage: (text: string) => dispatch({ type: ChatActionTypes.SET_INPUT_TEXT_MESSAGE, payload: text }),
-    handleAttachImages: (images: any[]) => {
-
+    handleAttachFiles: (files: FileList) => {
+      console.log(files);
     },
     handleSendImages: async () => {
       try {

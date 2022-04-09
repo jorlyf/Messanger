@@ -1,14 +1,17 @@
-import { AttachFilesAcceptTypesList, getAcceptFileExtensinons, IAttachFileTypeElement } from "./index";
+import { AttachFilesAcceptTypes, AttachFilesAcceptTypesList, getAcceptFileExtensinons, IAttachFileTypeElement } from "./index";
 import { RefObject } from "react";
+import FileContainer from "../../models/FileContainer";
 
 import styles from "./AttachFiles.module.scss";
+import { CancelButton } from "../Buttons";
 
 interface IMenuProps {
-    files: File[];
+    files: FileContainer[];
+    removeFile: (file: FileContainer) => void;
     inputRef: RefObject<HTMLInputElement>;
 }
 
-const Menu = ({ inputRef, files = [] }: IMenuProps) => {
+const Menu = ({ inputRef, removeFile, files = [] }: IMenuProps) => {
 
     const handleUpload = (elem: IAttachFileTypeElement) => {
         inputRef!.current!.accept = getAcceptFileExtensinons(elem.type);
@@ -17,28 +20,27 @@ const Menu = ({ inputRef, files = [] }: IMenuProps) => {
     }
 
     return (
-        <>
+        <div className={styles.menu}>
             <ul className={styles.selector}>
                 {AttachFilesAcceptTypesList.map((t, index) => (
-                    <li key={index} className={styles.typeElement} onClick={() => handleUpload(t)} >
+                    <li key={index} onClick={() => handleUpload(t)} >
                         <img src={t.pictureUrl} alt="" />
                         <span>{t.text}</span>
                     </li>
                 ))}
             </ul>
-            {/* {files.length > 0 &&
-                <div className={styles.menu}>
-                    <h1>Прикрепленное:</h1>
-                    <div className={styles.attachedList}>
-                        {files.map(f => (
-                            <div className={styles.attachedFile}>
-
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            } */}
-        </>
+            <ul className={styles.previews}>
+                {files.map((f, index) => (
+                    <li key={index}>
+                        {f.type === AttachFilesAcceptTypes.image && f.url.length > 0 &&
+                            <img src={f.url} alt="" />
+                        }
+                        <CancelButton onClick={() => removeFile(f)} />
+                        <span>{f.file.name}</span>
+                    </li>)
+                )}
+            </ul>
+        </div>
     )
 }
 

@@ -8,6 +8,7 @@ import { ChatActionTypes } from "../../redux/types/Chat";
 
 import Message from "../../models/Message";
 import Notification from "../../models/Notification";
+import FileContainer from "../../models/FileContainer";
 
 import Desktop from "./Desktop";
 import Mobile from "./Mobile";
@@ -20,7 +21,7 @@ interface IData {
   IS_MOBILE: boolean;
   USERNAME: string;
   INPUT_TEXT_MESSAGE: string;
-  ATTACHED_MESSAGE_IMAGES: any;
+  ATTACHED_MESSAGE_FILES: FileContainer[];
   MESSAGES: Message[];
   NEXT_MESSAGE_ID: number;
   IS_MEMBERS_INFO: boolean;
@@ -30,7 +31,7 @@ interface IHandlers {
   handleSendMessage: () => void;
   dispatchInputMessage: (text: string) => void;
   handleAttachFiles: (images: any) => void;
-  handleSendImages: () => void;
+  handleSendFiles: () => void;
 }
 export interface IChatWindowProps {
   data: IData;
@@ -46,13 +47,13 @@ const ChatWindow = () => {
     IS_MOBILE: useTypedSelector(state => state.app.IS_MOBILE),
     USERNAME: useTypedSelector(state => state.app.USERNAME),
     INPUT_TEXT_MESSAGE: useTypedSelector(state => state.chat.INPUT_TEXT_MESSAGE),
-    ATTACHED_MESSAGE_IMAGES: useTypedSelector(state => state.chat.ATTACHED_MESSAGE_IMAGES),
+    ATTACHED_MESSAGE_FILES: useTypedSelector(state => state.chat.ATTACHED_MESSAGE_FILES),
     MESSAGES: useTypedSelector(state => state.chat.MESSAGES),
     NEXT_MESSAGE_ID: useTypedSelector(state => state.chat.NEXT_MESSAGE_ID),
     IS_MEMBERS_INFO: useTypedSelector(state => state.chat.IS_MEMBERS_INFO),
     MEMBERS_LIST: useTypedSelector(state => state.chat.MEMBERS_LIST)
   };
-  
+
   const handlers: IHandlers = {
     handleSendMessage: () => {
       if (data.INPUT_TEXT_MESSAGE.length > 512) {
@@ -83,23 +84,23 @@ const ChatWindow = () => {
       }
     },
     dispatchInputMessage: (text: string) => dispatch({ type: ChatActionTypes.SET_INPUT_TEXT_MESSAGE, payload: text }),
-    handleAttachFiles: (files: FileList) => {
-      console.log(files);
+    handleAttachFiles: (files: FileContainer[]) => {
+      dispatch({ type: ChatActionTypes.SET_ATTACHED_MESSAGE_FILES, payload: files });
     },
-    handleSendImages: async () => {
+    handleSendFiles: async () => {
       try {
-        console.log(data.ATTACHED_MESSAGE_IMAGES);
-        const formData = createFormData(data.ATTACHED_MESSAGE_IMAGES);
+        console.log(data.ATTACHED_MESSAGE_FILES);
+        const formData = createFormData(data.ATTACHED_MESSAGE_FILES);
         const options = {
           method: "POST",
           // add connectionId SignalR in headers
           body: formData
         };
         console.log(formData);
-        
+
         const response = await fetch("https://localhost:7115/api/FileReceiver/AttachMessageImages", options);
         console.log(response);
-        
+
       } catch (error) {
         console.error(error);
       } finally {
@@ -108,7 +109,7 @@ const ChatWindow = () => {
     }
   };
 
-  useChatHub(); // connection to backend (signalR)
+  useChatHub(); // connection to backend (SignalR)
 
   return (
     <>

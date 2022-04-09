@@ -3,7 +3,7 @@ import { IChatState, IChatAction, ChatActionTypes } from "./types/Chat";
 const initialState: IChatState = {
   CHAT_HUB: undefined,
   INPUT_TEXT_MESSAGE: "",
-  ATTACHED_MESSAGE_IMAGES: [],
+  ATTACHED_MESSAGE_FILES: [],
   MESSAGES: [],
   NEXT_MESSAGE_ID: 1,
   IS_MEMBERS_INFO: true,
@@ -18,8 +18,8 @@ export const Chat = (state: IChatState = initialState, action: IChatAction): ICh
     case ChatActionTypes.SET_INPUT_TEXT_MESSAGE:
       return { ...state, INPUT_TEXT_MESSAGE: action.payload };
 
-    case ChatActionTypes.SET_ATTACHED_MESSAGE_IMAGES:
-      return { ...state, ATTACHED_MESSAGE_IMAGES: action.payload };
+    case ChatActionTypes.SET_ATTACHED_MESSAGE_FILES:
+      return { ...state, ATTACHED_MESSAGE_FILES: action.payload };
 
     case ChatActionTypes.SET_IS_MEMBERS_INFO:
       return { ...state, IS_MEMBERS_INFO: action.payload };

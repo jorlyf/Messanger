@@ -18,52 +18,52 @@
 }
 
 .menu {
-    position     : absolute;
-    margin-left  : auto;
-    margin-right : auto;
-    margin-top   : auto;
-    margin-bottom: auto;
-    top          : 0;
-    bottom       : 0;
-    left         : 0;
-    right        : 0;
+    position: absolute;
+    bottom  : 34px;
 
-    background-color: rgba(0, 0, 0, 0.1);
-
-    border    : 1px solid cadetblue;
-    box-shadow: -1px 3px 3px rgba(0, 0, 0, 0.2);
-
-    height: 85%;
-    width : 90%;
-
-    h1 {
-        font-size : 14px;
-        text-align: center;
-        margin    : 5px;
-    }
-}
-
-.selector {
-    list-style: none;
-    position  : absolute;
-    bottom    : 14px;
-
+    // max-height: 80vh;
     width: max-content;
 
-    padding: 0px 6px;
+    display       : flex;
+    flex-direction: column-reverse;
 
+    border          : 1px solid cadetblue;
     background-color: rgba(0, 0, 0, 0.08);
-    border          : 1px solid rgba(95, 158, 160, 0.5);
 
-    .typeElement {
-        img {
-            height: 16px;
-            width: 16px;
-            margin-right: 6px;
+    .selector {
+        list-style: none;
+
+        margin    : 0px;
+        padding   : 0px 2px;
+        border-top: 1px solid rgba(95, 158, 160, 0.5);
+
+        li {
+            img {
+                height      : 16px;
+                width       : 16px;
+                margin-right: 6px;
+            }
+
+            font-size       : 16px;
+            margin          : 6px 4px;
+            padding         : 0px 5px;
+            background-color: rgba(95, 158, 160, 0.1);
         }
-        font-size       : 16px;
-        margin          : 6px 4px;
-        padding: 0px 5px;
+    }
+
+    .previews {
+        list-style: none;
+
+        display       : flex;
+        flex-direction: column;
+
+        font-size       : 12px;
+        margin          : 0px;
+        padding         : 4px 5px;
         background-color: rgba(95, 158, 160, 0.1);
+
+        span {
+            padding-left: 4px;
+        }
     }
 }

@@ -2,11 +2,12 @@ import { BaseSyntheticEvent, useRef, useState } from "react";
 import Menu from "./Menu";
 
 import styles from "./AttachFiles.module.scss";
+import FileContainer from "../../models/FileContainer";
 
 export enum AttachFilesAcceptTypes {
     image = "image",
-    // video,
-    // file
+    video = "video",
+    all = "all"
 }
 
 export interface IAttachFileTypeElement {
@@ -53,7 +54,7 @@ const AttachFiles = ({ onUploaded, maxMBFileSize = 4, multiple = true }: IAttach
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [menuIsOpened, setMenuIsOpened] = useState<boolean>(false);
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<FileContainer[]>([]);
 
     const handleClick = (e: any) => {
         setMenuIsOpened(state => !state);
@@ -61,6 +62,7 @@ const AttachFiles = ({ onUploaded, maxMBFileSize = 4, multiple = true }: IAttach
 
     const handleChange = (e: BaseSyntheticEvent) => {
         addFiles(e.target.files);
+        handleSubmit();
     }
 
     const handleSubmit = () => {
@@ -71,24 +73,36 @@ const AttachFiles = ({ onUploaded, maxMBFileSize = 4, multiple = true }: IAttach
         return file.size <= maxMBFileSize * Math.pow(2, 20);
     }
 
-    const addFiles = (files: File[]) => {
+    const addFiles = (toAdd: FileList) => {
         if (multiple) {
-            const newFiles: File[] = [];
-            for (let i: number = 0; i < files.length; i++) {
-                const f: File = files[i];
-                if (isSizeValid(f)) { newFiles.push(f) }
-                else {
-                    console.log("картинка " + f.name + " превышает размер(МБ) " + maxMBFileSize);
-                };
+            const newFiles: FileContainer[] = [];
+            for (let i: number = 0; i < toAdd.length; i++) {
+                const f: File = toAdd[i];
+                if (isSizeValid(f)) {
+                    switch (f.type) {
+                        case "image/png":
+                        case "image/jpeg":
+                            newFiles.push(new FileContainer(f, AttachFilesAcceptTypes.image));
+                            break;
+
+                        default:
+                            continue;
+                    }
+                }
             }
-            setFiles(f => [...f, ...files]);
+            setFiles(files => [...files, ...newFiles]);
         } else {
-            const newFile: File= files[0];
-            setFiles([newFile]);
+            const newFile: File = toAdd[0];
+            switch (newFile.type) {
+                case "image/png":
+                case "image/jpeg":
+                    setFiles([new FileContainer(newFile, AttachFilesAcceptTypes.image)]);
+                    break;
+            }
         }
     }
-    const removeFiles = (files: File[]) => {
-
+    const removeFile = (file: FileContainer) => {
+        setFiles(files => files.filter(f => f !== file));
     }
 
     return (
@@ -96,6 +110,7 @@ const AttachFiles = ({ onUploaded, maxMBFileSize = 4, multiple = true }: IAttach
             {menuIsOpened && <Menu
                 inputRef={inputRef}
                 files={files}
+                removeFile={removeFile}
             />}
             <div className={styles.main}>
                 <img className={styles.button} onClick={handleClick} src="pics/attach.png" alt="" />

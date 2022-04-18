@@ -5,7 +5,7 @@ using ServerSide.Utils;
 
 namespace ServerSide.Hubs
 {
-	internal class ChatHub : Hub<IChatHubClient>
+	public class ChatHub : Hub<IChatHubClient>
 	{
 		private readonly ChatManager ChatManager;
 		public ChatHub(ChatManager chatManager)
@@ -19,19 +19,24 @@ namespace ServerSide.Hubs
 			base.Dispose(disposing);
 		}
 
-		public async Task SendMessage(string messageText)
-		{
-			User? senderUser = this.ChatManager.GetUserByConnectionID(Context.ConnectionId);
-			if (senderUser is null) return;
-			if (!senderUser.IsRegistrated) return;
+		//public async Task SendMessage(string messageText)
+		//{
+		//	User? senderUser = this.ChatManager.GetUserByConnectionID(Context.ConnectionId);
+		//	if (senderUser is null) return;
+		//	if (!senderUser.IsRegistrated) return;
 
-			Message message = this.ChatManager.CreateMessage(senderUser, messageText);
-			string jsonMessage = JsonHelper.Serialize(message);
+		//	Message message = this.ChatManager.CreateMessage(senderUser, messageText);
+		//	string jsonMessage = JsonHelper.Serialize(message);
 
-			Logger.UserSentMessage(senderUser, messageText);
+		//	Logger.UserSentMessage(senderUser, messageText);
 
-			await this.Clients.Others.ReceiveMessage(jsonMessage);
-		}
+		//	await this.Clients.Others.ReceiveMessage(jsonMessage);
+		//}
+		//public async Task SendMessage(Message message)
+		//{
+		//	string jsonMessage = JsonHelper.Serialize(message);
+		//	await this.Clients.All.ReceiveMessage(jsonMessage);
+		//}
 		public async Task Registrate(string data)
 		{
 			UserRegistration? registration = JsonHelper.Deserialize<UserRegistration>(data);
@@ -41,8 +46,14 @@ namespace ServerSide.Hubs
 			{
 				User? user = this.ChatManager.GetUserByConnectionID(Context.ConnectionId);
 				if (user is null) return;
+
+				RegistraionAnswer answer = new RegistraionAnswer
+				{ ConnectionId = user.ConnectionId, Status = "ok" };
+
+				string jsonAnswer = JsonHelper.Serialize(answer);
+
 				Logger.UserAuthorized(user);
-				await this.Clients.Caller.ReceiveRegistrationAnswer("ok");
+				await this.Clients.Caller.ReceiveRegistrationAnswer(jsonAnswer);
 			}
 			else
 			{

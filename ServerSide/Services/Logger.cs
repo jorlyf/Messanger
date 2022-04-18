@@ -22,6 +22,10 @@ namespace ServerSide.Services
 		{
 			Write($"User {user.Username} sent message: {messageText}");
 		}
+		public static void UserSentAttachment(User user, FileContainer fileContainer)
+		{
+			Write($"User {user.Username} sent attachment: {fileContainer.File.FileName}");
+		}
 		#endregion
 
 		public static void Write(string message)

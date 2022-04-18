@@ -5,6 +5,13 @@
     span {
         white-space: pre-line;
     }
+
+    .attachments {
+        padding-top: 5px;
+        img {
+            max-width: 60%;
+        }
+    }
 }
 .message {
     @extend %message-base;

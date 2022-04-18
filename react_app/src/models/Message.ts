@@ -4,7 +4,7 @@ interface IMessage {
     text: string;
     time: string;
     isMy: boolean;
-    imagesUrl?: string[];
+    attached_urls?: string[];
 }
 
 export default class Message implements IMessage {
@@ -13,14 +13,14 @@ export default class Message implements IMessage {
     public text: string;
     public time: string;
     public isMy: boolean;
-    public imagesUrl?: string[];
+    public attached_urls?: string[];
 
-    constructor(id: number, username: string, text: string, time: string, isMy: boolean, imagesUrl: string[] = []) {
+    constructor(id: number, username: string, text: string, time: string, isMy: boolean, attached_urls: string[] = []) {
         this.id = id;
         this.username = username;
         this.text = text;
         this.time = time;
         this.isMy = isMy;
-        this.imagesUrl = imagesUrl;
+        this.attached_urls = attached_urls;
     }
 }

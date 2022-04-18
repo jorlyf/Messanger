@@ -2,7 +2,7 @@
 
 namespace ServerSide.Services
 {
-	internal class ChatManager
+	public class ChatManager
 	{
 		private readonly SynchronizedCollection<User> AnonimUsers;
 		private readonly SynchronizedCollection<User> AuthorizedUsers;
@@ -16,7 +16,8 @@ namespace ServerSide.Services
 		}
 
 		public uint NextMessageId { get; set; } = 1;
-		public Message CreateMessage(User user, string text) => new Message(NextMessageId++, user.Username, text);
+		public Message CreateMessage(User user, string text, IEnumerable<string> attachmentUrls)
+			=> new Message(NextMessageId++, user.Username, text, attachmentUrls);
 		public MembersInfo CreateMembersInfo()
 		{
 			List<string> authorizedUsers = new List<string>(this.AuthorizedUsers.Select(u => u.Username));

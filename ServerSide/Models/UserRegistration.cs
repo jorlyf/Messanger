@@ -2,7 +2,7 @@
 
 namespace ServerSide.Models
 {
-	internal class UserRegistration
+	public class UserRegistration
 	{
 		[JsonPropertyName("username")]
 		public string Username { get; set; }

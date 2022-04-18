@@ -28,7 +28,7 @@
     flex-direction: column-reverse;
 
     border          : 1px solid cadetblue;
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgb(240, 250, 255);
 
     .selector {
         list-style: none;
@@ -60,7 +60,7 @@
         font-size       : 12px;
         margin          : 0px;
         padding         : 4px 5px;
-        background-color: rgba(95, 158, 160, 0.1);
+        background-color: rgb(95, 158, 160);
 
         span {
             padding-left: 4px;

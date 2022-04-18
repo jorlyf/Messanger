@@ -1,8 +1,13 @@
 import { BaseSyntheticEvent, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { ChatActionTypes } from "../../redux/types/Chat";
+import { AppActionTypes } from "../../redux/types/App";
+
 import Menu from "./Menu";
+import FileContainer from "../../models/FileContainer";
+import Notification from "../../models/Notification";
 
 import styles from "./AttachFiles.module.scss";
-import FileContainer from "../../models/FileContainer";
 
 export enum AttachFilesAcceptTypes {
     image = "image",
@@ -20,17 +25,7 @@ export const AttachFilesAcceptTypesList: IAttachFileTypeElement[] = [
     {
         type: AttachFilesAcceptTypes.image,
         text: "Фото",
-        pictureUrl: "pics/attachImage"
-    },
-    {
-        type: AttachFilesAcceptTypes.image,
-        text: "Фото",
-        pictureUrl: "pics/attachImage"
-    },
-    {
-        type: AttachFilesAcceptTypes.image,
-        text: "Фото",
-        pictureUrl: "pics/attachImage"
+        pictureUrl: "pics/camera.png"
     }
 ];
 
@@ -45,64 +40,79 @@ export const getAcceptFileExtensinons = (type: AttachFilesAcceptTypes): string =
 }
 
 export interface IAttachFilesProps {
-    onUploaded: (files: any) => void;
+    files: FileContainer[];
+    addFiles: (files: FileContainer[]) => void;
+    removeFiles: (files: FileContainer[]) => void;
+    lastAttachmentId: number;
     maxMBFileSize?: number;
     multiple?: boolean;
 }
 
-const AttachFiles = ({ onUploaded, maxMBFileSize = 4, multiple = true }: IAttachFilesProps) => {
+const AttachFiles = ({ files, addFiles, removeFiles, lastAttachmentId, maxMBFileSize = 4, multiple = true }: IAttachFilesProps) => {
+    const dispatch = useDispatch();  
+
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [menuIsOpened, setMenuIsOpened] = useState<boolean>(false);
-    const [files, setFiles] = useState<FileContainer[]>([]);
 
     const handleClick = (e: any) => {
         setMenuIsOpened(state => !state);
     }
 
     const handleChange = (e: BaseSyntheticEvent) => {
-        addFiles(e.target.files);
-        handleSubmit();
-    }
-
-    const handleSubmit = () => {
-        onUploaded([...files]);
+        handleAddFiles(e.target.files);
     }
 
     const isSizeValid = (file: File): boolean => {
         return file.size <= maxMBFileSize * Math.pow(2, 20);
     }
 
-    const addFiles = (toAdd: FileList) => {
+    const handleAddFiles = (fileList: FileList) => {
+        let id: number = lastAttachmentId;
+        
         if (multiple) {
             const newFiles: FileContainer[] = [];
-            for (let i: number = 0; i < toAdd.length; i++) {
-                const f: File = toAdd[i];
-                if (isSizeValid(f)) {
-                    switch (f.type) {
-                        case "image/png":
-                        case "image/jpeg":
-                            newFiles.push(new FileContainer(f, AttachFilesAcceptTypes.image));
-                            break;
+            for (let i: number = 0; i < fileList.length; i++) {
+                const f: File = fileList[i];
 
-                        default:
-                            continue;
-                    }
+                if (!isSizeValid(f)) {
+                    dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(`Файл ${f.name} превышает максимальный объем!`) });
+                    continue;
+                }
+
+                switch (f.type) {
+                    case "image/png":
+                    case "image/jpeg":
+                        newFiles.push(new FileContainer(++id, f, AttachFilesAcceptTypes.image));
+                        break;
+
+                    default:
+                        continue;
                 }
             }
-            setFiles(files => [...files, ...newFiles]);
-        } else {
-            const newFile: File = toAdd[0];
-            switch (newFile.type) {
+
+            addFiles(newFiles);
+        }
+
+        if (!multiple) {
+            const f: File = fileList[0];
+            if (!isSizeValid(f)) {
+                dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(`Файл ${f.name} превышает максимальный объем!`) });
+                return;
+            }
+            switch (f.type) {
                 case "image/png":
                 case "image/jpeg":
-                    setFiles([new FileContainer(newFile, AttachFilesAcceptTypes.image)]);
+                    addFiles([new FileContainer(++id, f, AttachFilesAcceptTypes.image)]);
                     break;
             }
         }
+
+        dispatch({ type: ChatActionTypes.SET_MY_LAST_ATTACHMENT_ID, payload: id });
     }
+
     const removeFile = (file: FileContainer) => {
-        setFiles(files => files.filter(f => f !== file));
+        removeFiles([file]);
     }
 
     return (

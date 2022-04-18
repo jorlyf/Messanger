@@ -16,15 +16,18 @@ const Mobile = ({ data, handlers }: IChatWindowProps) => {
             <div className={styles.input}>
                 <div className={styles.attachButton}>
                     <AttachFiles
-                        onUploaded={handlers.handleAttachFiles}
+                        files={data.INPUT_MESSAGE.attachments}
+                        addFiles={handlers.handleAttachFiles}
+                        removeFiles={handlers.handleRemoveFiles}
+                        lastAttachmentId={data.MY_LAST_ATTACHMENT_ID}
                         maxMBFileSize={8}
                         multiple={true}
                     />
                 </div>
 
                 <InputField
-                    value={data.INPUT_TEXT_MESSAGE}
-                    dispatchFunction={handlers.dispatchInputMessage}
+                    value={data.INPUT_MESSAGE.messageText}
+                    dispatchFunction={handlers.handleChangeInputMessageText}
                     handleEnter={handlers.handleSendMessage}
                     placeholder={"Напишите сообщение"}
                     isOneRow={true}

@@ -2,7 +2,7 @@
 
 namespace ServerSide.Models
 {
-	internal class MembersInfo
+	public class MembersInfo
 	{
 		public IEnumerable<string> Usernames { get; }
 		public DateTime Date { get; } = TimeUtils.FullDate;

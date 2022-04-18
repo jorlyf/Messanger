@@ -22,25 +22,26 @@ const Menu = ({ inputRef, removeFile, files = [] }: IMenuProps) => {
     return (
         <div className={styles.menu}>
             <ul className={styles.selector}>
-                {AttachFilesAcceptTypesList.map((t, index) => (
-                    <li key={index} onClick={() => handleUpload(t)} >
+                {AttachFilesAcceptTypesList.map(t => (
+                    <li key={t.type} onClick={() => handleUpload(t)} >
                         <img src={t.pictureUrl} alt="" />
                         <span>{t.text}</span>
                     </li>
                 ))}
             </ul>
-            <ul className={styles.previews}>
-                {files.map((f, index) => (
-                    <li key={index}>
-                        {f.type === AttachFilesAcceptTypes.image && f.url.length > 0 &&
-                            <img src={f.url} alt="" />
-                        }
-                        <CancelButton onClick={() => removeFile(f)} />
-                        <span>{f.file.name}</span>
-                    </li>)
-                )}
-            </ul>
-        </div>
+            {files.length > 0 &&
+                <ul className={styles.previews}>
+                    {files.map(f => (
+                        <li key={f.id}>
+                            {f.type === AttachFilesAcceptTypes.image && f.url.length > 0 &&
+                                <img src={f.url} alt="" />
+                            }
+                            <CancelButton onClick={() => removeFile(f)} />
+                            <span>{f.file.name}</span>
+                        </li>)
+                    )}
+                </ul>}
+        </div >
     )
 }
 

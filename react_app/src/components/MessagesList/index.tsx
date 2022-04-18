@@ -1,4 +1,5 @@
 import Message from "../../models/Message";
+import { config } from "../../utils/config";
 
 import styles from "./MessagesList.module.scss";
 
@@ -26,6 +27,11 @@ const MessageComponent = ({ message }: { message: Message }) => {
                 <span className={styles.time}>{message.time}</span>
             </div>
             <span>{message.text}</span>
+            <div className={styles.attachments}>
+                {message.attached_urls?.map(url => (
+                    <img key={url} src={`${config.apiUrl}${url}`} alt="" />
+                ))}
+            </div>
         </div>
     )
 }

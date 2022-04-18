@@ -2,7 +2,7 @@
 
 namespace ServerSide.Models
 {
-	internal class User
+	public class User
 	{
 		public string ConnectionId { get; }
 		public string Username { get; private set; } = "Anon";

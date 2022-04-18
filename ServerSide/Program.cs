@@ -1,3 +1,4 @@
+using Microsoft.Extensions.FileProviders;
 using ServerSide.Hubs;
 using ServerSide.Services;
 
@@ -26,6 +27,8 @@ builder.Services.AddCors(options =>
 });
 
 #region Service registration
+builder.Services.AddSingleton<DirectoriesManager>();
+builder.Services.AddSingleton<FileManager>();
 builder.Services.AddSingleton<ChatManager>();
 #endregion
 
@@ -44,6 +47,14 @@ else
 
 //app.UseHttpsRedirection();
 app.UseRouting();
+
+// share static files/images
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(
+		   Path.Combine(builder.Environment.ContentRootPath, "Files")),
+	RequestPath = "/api/Files"
+});
 
 //app.UseAuthorization();
 app.UseEndpoints(endpoints =>

@@ -1,3 +1,5 @@
+import InputMessage from "../models/InputMessage";
+
 export const trimString = (value: string) => {
   return value.trim().replace(/  +/g, ' ').replace(/\n\s*\n\s*\n/g, '\n\n');
 }
@@ -19,12 +21,19 @@ export const isScrolledDown = (elementName: string): boolean => {
   if (!element) return false;
   return element.scrollTop >= (element.scrollHeight - element.offsetHeight);
 }
-export const createFormData = (files: any[]): FormData => {
+export const getCurrentTime = () => {
+  return new Date().toLocaleTimeString('ru', { hour12: false, hour: "numeric", minute: "numeric" });
+}
+export const createInputMessageFormData = (message: InputMessage): FormData => {
   const formData: FormData = new FormData();
-  
-  for (const file of files) {
-    formData.append('files', file);
-  };
+
+  formData.set("MessageText", message.messageText);
+  message.attachments.forEach((attachment, index) => {
+    formData.append(`Attachments[${index}].Id`, attachment.id.toString());
+    formData.append(`Attachments[${index}].File`, attachment.file);
+    formData.append(`Attachments[${index}].Type`, attachment.type);
+    formData.append(`Attachments[${index}].FileName`, attachment.file.name);
+  });
 
   return formData;
 }

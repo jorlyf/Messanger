@@ -5,6 +5,7 @@ import MembersInfo from "../../components/MembersInfo";
 import styles from "./Desktop.module.scss";
 
 import { IChatWindowProps } from "./index";
+import AttachFiles from "../../components/AttachFiles";
 const Desktop = ({ data, handlers }: IChatWindowProps) => {
   return (
     <div className={styles.main}>
@@ -14,9 +15,20 @@ const Desktop = ({ data, handlers }: IChatWindowProps) => {
         </div>
 
         <div className={styles.input}>
+          <div className={styles.attachButton}>
+            <AttachFiles
+              files={data.INPUT_MESSAGE.attachments}
+              addFiles={handlers.handleAttachFiles}
+              removeFiles={handlers.handleRemoveFiles}
+              lastAttachmentId={data.MY_LAST_ATTACHMENT_ID}
+              maxMBFileSize={8}
+              multiple={true}
+            />
+          </div>
+
           <InputField
-            value={data.INPUT_TEXT_MESSAGE}
-            dispatchFunction={handlers.dispatchInputMessage}
+            value={data.INPUT_MESSAGE.messageText}
+            dispatchFunction={handlers.handleChangeInputMessageText}
             handleEnter={handlers.handleSendMessage}
             placeholder={"Напишите сообщение"}
           />
@@ -28,11 +40,6 @@ const Desktop = ({ data, handlers }: IChatWindowProps) => {
 
       <div className={styles.MembersInfo}>
         <MembersInfo />
-
-        {/* <button className={styles.attachImageButton}
-          onClick={handlers.handleSendImages}
-        /> */}
-
       </div>
 
     </div>

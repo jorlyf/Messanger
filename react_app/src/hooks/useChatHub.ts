@@ -12,10 +12,16 @@ import Message from "../models/Message";
 import Notification from "../models/Notification";
 import useTypedSelector from "./useTypedSelector";
 
+enum RegistrationStatus {
+    OK = "ok",
+    LOGIN_IS_TAKEN = "login is taken",
+    ERROR = "error"
+}
+
 const buildConnection = (): HubConnection => {
 
     return new HubConnectionBuilder()
-        .withUrl(`${config.apiUrl}/api/chathub`, { // debug
+        .withUrl(`${config.apiUrl}/api/chathub`, {
             skipNegotiation: true,
             transport: HttpTransportType.WebSockets
         })
@@ -33,7 +39,7 @@ const useChatHub = () => {
     const refToUsername = React.useRef<string>("");
 
     React.useEffect(() => {
-        refToUsername.current = USERNAME;       
+        refToUsername.current = USERNAME;
     }, [USERNAME]);
 
     React.useEffect((): any => {
@@ -65,14 +71,22 @@ const useChatHub = () => {
         });
         chatHub.on("ReceiveRegistrationAnswer", (jsonString: string) => {
             const answer = JSON.parse(jsonString);
-            if (answer.Status === "ok") {
+            if (answer.Status === RegistrationStatus.OK) {
                 dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: true });
                 dispatch({ type: AppActionTypes.SET_CONNECTION_ID, payload: answer.ConnectionId });
             }
-            else {
+            else if (answer.Status === RegistrationStatus.LOGIN_IS_TAKEN) {
                 dispatch({ type: AppActionTypes.SET_IS_AUTHORIZED, payload: false });
                 dispatch({ type: AppActionTypes.SET_CONNECTION_ID, payload: "" });
-                dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification("Ошибка регистрации. Ваше имя уже кем-то занято!") });
+                dispatch({
+                    type: AppActionTypes.ADD_NOTIFICATION,
+                    payload: new Notification("Ошибка регистрации. Ваше имя уже кем-то занято!")
+                });
+            } else {
+                dispatch({
+                    type: AppActionTypes.ADD_NOTIFICATION,
+                    payload: new Notification("Неизвестная ошибка при регистрации")
+                });
             }
         });
         chatHub.on("ReceiveOnlineMembersList", (stringOnlineUsers: string) => {

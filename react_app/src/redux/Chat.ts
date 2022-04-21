@@ -30,14 +30,16 @@ export const Chat = (state: IChatState = initialState, action: IChatAction): ICh
     case ChatActionTypes.REMOVE_INPUT_MESSAGE_ATTACHMENTS:
       const toRemove: FileContainer[] = action.payload;
       const files: FileContainer[] = state.INPUT_MESSAGE.attachments;
-      files.filter(file => {
+
+      const newFiles: FileContainer[] = files.filter(file => {
+        let saveFlag = true;
         toRemove.forEach(remove => {
-          if (file === remove) return false;
+          if (file.id === remove.id) saveFlag = false;
         });
-        return true;
+        return saveFlag;
       });
 
-      return { ...state, INPUT_MESSAGE: new InputMessage(state.INPUT_MESSAGE.messageText, [...files]) };
+      return { ...state, INPUT_MESSAGE: new InputMessage(state.INPUT_MESSAGE.messageText, [...newFiles]) };
 
     case ChatActionTypes.CLEAR_INPUT_MESSAGE_ATTACHMENTS:
       return { ...state, INPUT_MESSAGE: new InputMessage(state.INPUT_MESSAGE.messageText, []) };

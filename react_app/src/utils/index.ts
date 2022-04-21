@@ -37,3 +37,6 @@ export const createInputMessageFormData = (message: InputMessage): FormData => {
 
   return formData;
 }
+export const clipString = (value: string, size: number): string => {
+  return value.slice(0, size-2) + "..";
+}

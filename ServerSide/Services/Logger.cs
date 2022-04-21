@@ -28,6 +28,11 @@ namespace ServerSide.Services
 		}
 		#endregion
 
+		public static void ExceptionOccured(Exception ex)
+		{
+			Write($"Exception: {ex.Message}");
+		}
+
 		public static void Write(string message)
 		{
 			Console.WriteLine($"[Log] {DateTime.UtcNow.ToLocalTime().ToShortTimeString()} {message}");

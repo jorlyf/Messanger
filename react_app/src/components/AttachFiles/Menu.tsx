@@ -4,6 +4,7 @@ import FileContainer from "../../models/FileContainer";
 
 import styles from "./AttachFiles.module.scss";
 import { CancelButton } from "../Buttons";
+import { clipString } from "../../utils";
 
 interface IMenuProps {
     files: FileContainer[];
@@ -37,7 +38,7 @@ const Menu = ({ inputRef, removeFile, files = [] }: IMenuProps) => {
                                 <img src={f.url} alt="" />
                             }
                             <CancelButton onClick={() => removeFile(f)} />
-                            <span>{f.file.name}</span>
+                            <span>{clipString(f.file.name, 20)}</span>
                         </li>)
                     )}
                 </ul>}

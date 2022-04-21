@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using ServerSide.Services;
+using System.Text.Json;
 
 namespace ServerSide.Utils
 {
@@ -8,10 +9,18 @@ namespace ServerSide.Utils
 		{
 			return JsonSerializer.Serialize(obj);
 		}
-		public static T Deserialize<T>(string json)
+		public static T? Deserialize<T>(string json) where T : class
 		{
-			T? result = JsonSerializer.Deserialize<T>(json);
-			return result;
+			try
+			{
+				T? result = JsonSerializer.Deserialize<T>(json);
+				return result;
+			}
+			catch (JsonException ex)
+			{
+				Logger.ExceptionOccured(ex);
+				return null;
+			}
 		}
 	}
 }

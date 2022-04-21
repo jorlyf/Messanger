@@ -44,13 +44,17 @@ namespace ServerSide.Services
 			this.OnUsersUpdate?.Invoke();
 			return user;
 		}
-		public bool RegistrateUser(string connectionId, UserRegistration registration)
+		public RegistraionAnswer RegistrateUser(string connectionId, UserRegistration registration)
 		{
 			User? user = GetUserByConnectionID(connectionId);
-			if (user is null) return false;
-			if (user.IsRegistrated) return false;
 
-			if (this.AuthorizedUsers.Any(user => user.Username.ToLower() == registration.Username.ToLower())) return false;
+			if (user is null)
+				return new RegistraionAnswer { ConnectionId = connectionId, Status = "error" };
+			if (user.IsRegistrated)
+				return new RegistraionAnswer { ConnectionId = connectionId, Status = "error" };
+
+			if (this.AuthorizedUsers.Any(user => user.Username.ToLower() == registration.Username.ToLower()))
+				return new RegistraionAnswer { ConnectionId = connectionId, Status = "login is taken" };
 
 			user.Registrate(registration);
 
@@ -58,7 +62,9 @@ namespace ServerSide.Services
 			this.AnonimUsers.Remove(user);
 
 			this.OnUsersUpdate?.Invoke();
-			return true;
+			Logger.UserAuthorized(user);
+
+			return new RegistraionAnswer { ConnectionId = connectionId, Status = "ok" };
 		}
 
 		public User? GetUserByConnectionID(string connectionId)

@@ -42,23 +42,10 @@ namespace ServerSide.Hubs
 			UserRegistration? registration = JsonHelper.Deserialize<UserRegistration>(data);
 			if (registration is null) return;
 
-			if (this.ChatManager.RegistrateUser(Context.ConnectionId, registration))
-			{
-				User? user = this.ChatManager.GetUserByConnectionID(Context.ConnectionId);
-				if (user is null) return;
+			RegistraionAnswer answer = this.ChatManager.RegistrateUser(Context.ConnectionId, registration);
 
-				RegistraionAnswer answer = new RegistraionAnswer
-				{ ConnectionId = user.ConnectionId, Status = "ok" };
-
-				string jsonAnswer = JsonHelper.Serialize(answer);
-
-				Logger.UserAuthorized(user);
-				await this.Clients.Caller.ReceiveRegistrationAnswer(jsonAnswer);
-			}
-			else
-			{
-				await this.Clients.Caller.ReceiveRegistrationAnswer("error");
-			}
+			string jsonRegistationAnser = JsonHelper.Serialize(answer);
+			await this.Clients.Caller.ReceiveRegistrationAnswer(jsonRegistationAnser);
 		}
 		private async Task SendMembersInfo()
 		{

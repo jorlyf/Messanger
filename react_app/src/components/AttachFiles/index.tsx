@@ -8,6 +8,7 @@ import FileContainer from "../../models/FileContainer";
 import Notification from "../../models/Notification";
 
 import styles from "./AttachFiles.module.scss";
+import { clipString } from "../../utils";
 
 export enum AttachFilesAcceptTypes {
     image = "image",
@@ -49,7 +50,7 @@ export interface IAttachFilesProps {
 }
 
 const AttachFiles = ({ files, addFiles, removeFiles, lastAttachmentId, maxMBFileSize = 4, multiple = true }: IAttachFilesProps) => {
-    const dispatch = useDispatch();  
+    const dispatch = useDispatch();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -69,14 +70,17 @@ const AttachFiles = ({ files, addFiles, removeFiles, lastAttachmentId, maxMBFile
 
     const handleAddFiles = (fileList: FileList) => {
         let id: number = lastAttachmentId;
-        
+
         if (multiple) {
             const newFiles: FileContainer[] = [];
             for (let i: number = 0; i < fileList.length; i++) {
                 const f: File = fileList[i];
 
                 if (!isSizeValid(f)) {
-                    dispatch({ type: AppActionTypes.ADD_NOTIFICATION, payload: new Notification(`Файл ${f.name} превышает максимальный объем!`) });
+                    dispatch({
+                        type: AppActionTypes.ADD_NOTIFICATION,
+                        payload: new Notification(`Файл ${clipString(f.name, 20)} превышает максимальный объем = ${maxMBFileSize} МБ!`)
+                    });
                     continue;
                 }
 

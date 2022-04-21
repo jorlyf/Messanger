@@ -81,18 +81,6 @@ const ChatWindow = () => {
           }
         };
 
-        // dispatch({
-        //   type: ChatActionTypes.ADD_MESSAGE, payload: new Message(
-        //     0,
-        //     data.USERNAME,
-        //     message.messageText,
-        //     getCurrentTime(),
-        //     true,
-        //     message.attachments.map(at => (
-          
-        //   )))
-        // })
-
         const response = await fetch(`${config.apiUrl}/api/Chat/SendMessage`, options);
 
         dispatch({ type: ChatActionTypes.CLEAR_INPUT_MESSAGE });

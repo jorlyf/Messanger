@@ -12,11 +12,11 @@ namespace ServerSide.Controllers
 	[Route("api/[controller]")]
 	public class ChatController : ControllerBase
 	{
-		private ChatManager ChatManager;
-		private IHubContext<ChatHub, IChatHubClient> ChatHub;
-		private FileManager FileManager;
+		private readonly ChatManager ChatManager;
+		private readonly IHubContext<ChatHub, IChatHubClient> ChatHub;
+		private readonly FileManager FileManager;
 
-		private int MaxMBAttachmentSize = 8;
+		private readonly int MaxMBAttachmentSize = 8;
 
 		public ChatController(ChatManager chatManager, IHubContext<ChatHub, IChatHubClient> chatHub, FileManager fileManager)
 		{
@@ -52,8 +52,8 @@ namespace ServerSide.Controllers
 			if (inputMessage.MessageText is null) inputMessage.MessageText = "";
 			Message message = this.ChatManager.CreateMessage(user, inputMessage.MessageText, attachmentUrls);
 			string jsonMessage = JsonHelper.Serialize(message);
-			Console.WriteLine(jsonMessage);
 			this.ChatHub.Clients.All.ReceiveMessage(jsonMessage);
+			Logger.UserSentMessage(user, message.Text);
 
 			return Ok();
 		}
